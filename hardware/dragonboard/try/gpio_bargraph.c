@@ -10,12 +10,10 @@
 
 #include "mraa/gpio.h"
 
-
 typedef struct BargraphSequence {
 	int pins[7];
 	int timestuck[7];
 } BGSequence;
-
 
 volatile sig_atomic_t flag = 1;
 void sig_handler(int signum) {
@@ -34,7 +32,6 @@ int main(int argc, char** argv) {
 
 	BGSequence bgs = { {23,24,25,26,27}, {1,2,1,3,1} };
 
-
 	mraa_result_t status = MRAA_SUCCESS;
 	mraa_gpio_context gpioc[5];
 
@@ -48,7 +45,7 @@ int main(int argc, char** argv) {
 		if (gpioc[i] == NULL) {
 			fprintf(stderr, "Failed to initialize GPIO %d\n", bgs.pins[i]);
 			mraa_deinit();
-	return 		EXIT_FAILURE;
+			return EXIT_FAILURE;
 		}
 	}
 
