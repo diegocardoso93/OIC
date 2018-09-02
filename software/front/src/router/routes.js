@@ -24,7 +24,7 @@ const oicRouter = {
         icon: 'home',
         backRoute: '/'
       },
-      component: () => import('pages/index')
+      component: () => import('pages/Index')
     }
   ]
 }
