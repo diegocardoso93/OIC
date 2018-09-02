@@ -1,24 +1,33 @@
-const Koa = require('koa');
-const app = new Koa();
+const Koa = require('koa')
+const Router = require('koa-router')
+const app = new Koa()
+const router = new Router()
+const cors = require('@koa/cors');
 
-// logger
-app.use(async (ctx, next) => {
-  await next();
-  const rt = ctx.response.get('X-Response-Time');
-  console.log(`${ctx.method} ${ctx.url} - ${rt}`);
-});
+const mqtt = require('mqtt')
 
-// x-response-time
-app.use(async (ctx, next) => {
-  const start = Date.now();
-  await next();
-  const ms = Date.now() - start;
-  ctx.set('X-Response-Time', `${ms}ms`);
-});
+const client  = mqtt.connect('mqtt://localhost')
 
-// response
-app.use(async ctx => {
-  ctx.body = 'Hello World';
-});
+client.on('connect', function () {
+  client.subscribe('presence', function (err) {})
+})
+ 
+client.on('message', function (topic, message) {
+  console.log(message.toString())
+  client.end()
+})
 
-app.listen(3000);
+router.get('/', (ctx, next) => {
+  ctx.body = 'hello'
+})
+
+router.get('/tv/:button', (ctx, next) => {
+  client.publish('control/tv', ctx.params.button)
+  ctx.body = {status: 200}
+})
+
+app
+  .use(cors({origin: (ctx) => { return '*' }}))
+  .use(router.routes())
+
+app.listen(3000)

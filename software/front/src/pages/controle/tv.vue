@@ -1,6 +1,6 @@
 <template>
   <q-page padding id="tv">
-      <q-btn color="negative" size="3vh" icon="power_settings_new" />
+      <q-btn color="negative" size="3vh" icon="power_settings_new" v-on:click="buttonPressed(power)" />
       <q-btn color="blue-grey" size="3vh" icon="arrow_drop_down" />
       <q-btn color="blue-grey" size="3vh" icon="arrow_left" />
       <q-btn color="blue-grey" size="3vh" icon="arrow_right" />
@@ -32,6 +32,18 @@
 export default {
   data () {
     return {
+      power: 1
+    }
+  },
+  methods: {
+    buttonPressed: function (key) {
+      this.$axios.get('http://' + location.hostname + ':3000/tv/' + key, {button: key})
+        .then((response) => {
+          console.log(response)
+        })
+        .catch(() => {
+          alert('error')
+        })
     }
   }
 }

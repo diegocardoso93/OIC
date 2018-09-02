@@ -4,7 +4,7 @@
       <img src="~assets/logo.jpg">
 
       <p class="caption">
-        Seja bem-vindo e talz.
+        Seja bem-vindo.
       </p>
     </div>
 
