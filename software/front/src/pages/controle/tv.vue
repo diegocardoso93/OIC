@@ -13,15 +13,15 @@
       <q-btn color="blue-grey" size="3vh" label="Ch" icon-right="add" />
       <q-btn color="blue-grey" size="3vh" label="Ch" icon-right="remove" />
 
-      <q-btn color="dark" size="3vh" label="1" />
-      <q-btn color="dark" size="3vh" label="2" />
-      <q-btn color="dark" size="3vh" label="3" />
-      <q-btn color="dark" size="3vh" label="4" />
-      <q-btn color="dark" size="3vh" label="5" />
-      <q-btn color="dark" size="3vh" label="6" />
-      <q-btn color="dark" size="3vh" label="7" />
-      <q-btn color="dark" size="3vh" label="8" />
-      <q-btn color="dark" size="3vh" label="9" />
+      <q-btn color="dark" size="3vh" label="1" v-on:click="buttonPressed(1)" />
+      <q-btn color="dark" size="3vh" label="2" v-on:click="buttonPressed(2)" />
+      <q-btn color="dark" size="3vh" label="3" v-on:click="buttonPressed(3)" />
+      <q-btn color="dark" size="3vh" label="4" v-on:click="buttonPressed(4)" />
+      <q-btn color="dark" size="3vh" label="5" v-on:click="buttonPressed(5)" />
+      <q-btn color="dark" size="3vh" label="6" v-on:click="buttonPressed(6)" />
+      <q-btn color="dark" size="3vh" label="7" v-on:click="buttonPressed(7)" />
+      <q-btn color="dark" size="3vh" label="8" v-on:click="buttonPressed(8)" />
+      <q-btn color="dark" size="3vh" label="9" v-on:click="buttonPressed(9)" />
 
       <q-btn color="black" size="3vh" icon="audiotrack" />
       <q-btn color="black" size="3vh" icon="child_care" />
@@ -32,7 +32,16 @@
 export default {
   data () {
     return {
-      power: 1
+      power: 'power',
+      1: '1',
+      2: '2',
+      3: '3',
+      4: '4',
+      5: '5',
+      6: '6',
+      7: '7',
+      8: '8',
+      9: '9'
     }
   },
   methods: {
