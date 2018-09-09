@@ -15,6 +15,11 @@ export default [
         hash: 'arsplit'
       },
       {
+        title: 'Iluminação',
+        icon: 'wb_incandescent',
+        hash: 'iluminacao'
+      },
+      {
         title: 'Receptor TV',
         icon: 'live_tv',
         hash: 'receptor-tv'
@@ -23,11 +28,6 @@ export default [
         title: 'Home Theater',
         icon: 'audiotrack',
         hash: 'home-theater'
-      },
-      {
-        title: 'Iluminação',
-        icon: 'wb_incandescent',
-        hash: 'iluminacao'
       }
     ]
   },
@@ -47,6 +47,11 @@ export default [
         hash: 'arsplit'
       },
       {
+        title: 'Iluminação',
+        icon: 'wb_incandescent',
+        hash: 'iluminacao'
+      },
+      {
         title: 'Receptor TV',
         icon: 'live_tv',
         hash: 'receptor-tv'
@@ -55,11 +60,6 @@ export default [
         title: 'Home Theater',
         icon: 'audiotrack',
         hash: 'home-theater'
-      },
-      {
-        title: 'Iluminação',
-        icon: 'wb_incandescent',
-        hash: 'iluminacao'
       }
     ]
   }
