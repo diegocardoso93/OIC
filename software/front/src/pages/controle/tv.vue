@@ -1,6 +1,6 @@
 <template>
   <q-page id="tv">
-    <q-btn round color="negative" size="2vh" icon="power_settings_new" class="power" v-on:click="buttonPressed(power)" />
+    <q-btn round color="negative" size="2vh" icon="power_settings_new" class="power" v-on:click="buttonPressed('power')" />
     <button tabindex="0" type="button" v-on:click="buttonPressed('tv')" class="q-btn inline relative-position q-btn-item non-selectable power q-btn-round q-focusable q-hoverable bg-dark text-white" style="font-size: 2vh;float: right">
       <div class="q-btn-inner row col items-center justify-center">TV</div>
     </button>
@@ -10,17 +10,17 @@
     <q-btn color="dark" size="2vh" class="small-1" icon="search" v-on:click="buttonPressed('search')" />
     <q-btn color="dark" size="2vh" class="small-1" icon="home" v-on:click="buttonPressed('home')" />
 
-    <q-btn color="dark" size="3vh" label="1" class="number" v-on:click="buttonPressed(1)" />
-    <q-btn color="dark" size="3vh" label="2" class="number" v-on:click="buttonPressed(2)" />
-    <q-btn color="dark" size="3vh" label="3" class="number" v-on:click="buttonPressed(3)" />
-    <q-btn color="dark" size="3vh" label="4" class="number" v-on:click="buttonPressed(4)" />
-    <q-btn color="dark" size="3vh" label="5" class="number" v-on:click="buttonPressed(5)" />
-    <q-btn color="dark" size="3vh" label="6" class="number" v-on:click="buttonPressed(6)" />
-    <q-btn color="dark" size="3vh" label="7" class="number" v-on:click="buttonPressed(7)" />
-    <q-btn color="dark" size="3vh" label="8" class="number" v-on:click="buttonPressed(8)" />
-    <q-btn color="dark" size="3vh" label="9" class="number" v-on:click="buttonPressed(9)" />
+    <q-btn color="dark" size="3vh" label="1" class="number" v-on:click="buttonPressed('1')" />
+    <q-btn color="dark" size="3vh" label="2" class="number" v-on:click="buttonPressed('2')" />
+    <q-btn color="dark" size="3vh" label="3" class="number" v-on:click="buttonPressed('3')" />
+    <q-btn color="dark" size="3vh" label="4" class="number" v-on:click="buttonPressed('4')" />
+    <q-btn color="dark" size="3vh" label="5" class="number" v-on:click="buttonPressed('5')" />
+    <q-btn color="dark" size="3vh" label="6" class="number" v-on:click="buttonPressed('6')" />
+    <q-btn color="dark" size="3vh" label="7" class="number" v-on:click="buttonPressed('7')" />
+    <q-btn color="dark" size="3vh" label="8" class="number" v-on:click="buttonPressed('8')" />
+    <q-btn color="dark" size="3vh" label="9" class="number" v-on:click="buttonPressed('9')" />
     <q-btn color="dark" size="2vh" label="list" class="number" v-on:click="buttonPressed('list')" />
-    <q-btn color="dark" size="3vh" label="0" class="number" v-on:click="buttonPressed(0)" />
+    <q-btn color="dark" size="3vh" label="0" class="number" v-on:click="buttonPressed('0')" />
     <q-btn color="dark" size="2vh" label="flashbk" class="number" v-on:click="buttonPressed('flashbk')" />
 
     <div style="width:33%;float:left">
