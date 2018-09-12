@@ -63,7 +63,7 @@ export default {
   },
   methods: {
     buttonPressed: function (key) {
-      this.$axios.get('http://' + location.hostname + ':3000/tv/' + key, {button: key})
+      this.$axios.get('http://' + location.hostname + ':3000/receptor-tv/' + key, {button: key})
         .then((response) => {
           console.log(response)
         })
