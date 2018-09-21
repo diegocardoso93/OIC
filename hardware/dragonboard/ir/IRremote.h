@@ -62,4 +62,5 @@ class IRrecv
 		int   compare (unsigned int oldval, unsigned int newval) ;
 
 		bool  decodeNEC (decode_results *results) ;
-} ;
+};
+#endif
