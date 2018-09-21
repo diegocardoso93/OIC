@@ -1,17 +1,13 @@
+//******************************************************************************
+// OIC - Omnidirecional Infrared Center - 2018
+// IR Remote NEC Protocol
+// Based on https://github.com/z3t0/Arduino-IRremote
+//******************************************************************************
+
 #include "IRremote.h"
 #include "IRremoteInt.h"
 
-#ifdef IR_TIMER_USE_ESP32
-hw_timer_t *timer;
-void IRTimer(); // defined in IRremote.cpp
-#endif
-
-//+=============================================================================
-// Decodes the received IR message
-// Returns 0 if no data ready, 1 if data ready.
-// Results of decoding are stored in results
-//
-int  IRrecv::decode (decode_results *results)
+int IRrecv::decode (decode_results *results)
 {
 	results->rawbuf   = irparams.rawbuf;
 	results->rawlen   = irparams.rawlen;
@@ -25,71 +21,6 @@ int  IRrecv::decode (decode_results *results)
 	if (decodeNEC(results))  return true ;
 #endif
 
-#if DECODE_SONY
-	DBG_PRINTLN("Attempting Sony decode");
-	if (decodeSony(results))  return true ;
-#endif
-
-#if DECODE_SANYO
-	DBG_PRINTLN("Attempting Sanyo decode");
-	if (decodeSanyo(results))  return true ;
-#endif
-
-#if DECODE_MITSUBISHI
-	DBG_PRINTLN("Attempting Mitsubishi decode");
-	if (decodeMitsubishi(results))  return true ;
-#endif
-
-#if DECODE_RC5
-	DBG_PRINTLN("Attempting RC5 decode");
-	if (decodeRC5(results))  return true ;
-#endif
-
-#if DECODE_RC6
-	DBG_PRINTLN("Attempting RC6 decode");
-	if (decodeRC6(results))  return true ;
-#endif
-
-#if DECODE_PANASONIC
-	DBG_PRINTLN("Attempting Panasonic decode");
-	if (decodePanasonic(results))  return true ;
-#endif
-
-#if DECODE_LG
-	DBG_PRINTLN("Attempting LG decode");
-	if (decodeLG(results))  return true ;
-#endif
-
-#if DECODE_JVC
-	DBG_PRINTLN("Attempting JVC decode");
-	if (decodeJVC(results))  return true ;
-#endif
-
-#if DECODE_SAMSUNG
-	DBG_PRINTLN("Attempting SAMSUNG decode");
-	if (decodeSAMSUNG(results))  return true ;
-#endif
-
-#if DECODE_WHYNTER
-	DBG_PRINTLN("Attempting Whynter decode");
-	if (decodeWhynter(results))  return true ;
-#endif
-
-#if DECODE_AIWA_RC_T501
-	DBG_PRINTLN("Attempting Aiwa RC-T501 decode");
-	if (decodeAiwaRCT501(results))  return true ;
-#endif
-
-#if DECODE_DENON
-	DBG_PRINTLN("Attempting Denon decode");
-	if (decodeDenon(results))  return true ;
-#endif
-
-#if DECODE_LEGO_PF
-	DBG_PRINTLN("Attempting Lego Power Functions");
-	if (decodeLegoPowerFunctions(results))  return true ;
-#endif
-
 	// decodeHash returns a hash on any input.
 	// Thus, it needs to be last in the list.
 	// If you add any decodes, add them before this.
@@ -100,7 +31,6 @@ int  IRrecv::decode (decode_results *results)
 	return false;
 }
 
-//+=============================================================================
 IRrecv::IRrecv (int recvpin)
 {
 	irparams.recvpin = recvpin;
@@ -108,7 +38,7 @@ IRrecv::IRrecv (int recvpin)
 }
 
 
-//+=============================================================================
+// **
 // initialization
 //
 void  IRrecv::enableIRIn ( )
@@ -118,14 +48,15 @@ void  IRrecv::enableIRIn ( )
 	irparams.rawlen = 0;
 }
 
-//+=============================================================================
+// **
 // Return if receiving new IR signals
 //
 bool  IRrecv::isIdle ( )
 {
  return (irparams.rcvstate == STATE_IDLE || irparams.rcvstate == STATE_STOP) ? true : false;
 }
-//+=============================================================================
+
+// **
 // Restart the ISR state machine
 //
 void  IRrecv::resume ( )
@@ -134,7 +65,7 @@ void  IRrecv::resume ( )
 	irparams.rawlen = 0;
 }
 
-//+=============================================================================
+// **
 // hashdecode - decode an arbitrary IR code.
 // Instead of decoding using a standard encoding scheme
 // (e.g. Sony, NEC, RC5), the code is hashed to a 32-bit value.
@@ -158,7 +89,7 @@ int  IRrecv::compare (unsigned int oldval,  unsigned int newval)
 	else                            return 1 ;
 }
 
-//+=============================================================================
+// **
 // Use FNV hash algorithm: http://isthe.com/chongo/tech/comp/fnv/#FNV-param
 // Converts the raw code values into a 32-bit hash code.
 // Hopefully this code is unique for each button.

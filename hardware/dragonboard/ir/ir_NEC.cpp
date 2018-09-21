@@ -1,13 +1,11 @@
+//******************************************************************************
+// OIC - Omnidirecional Infrared Center - 2018
+// IR Remote NEC Protocol
+// Based on https://github.com/z3t0/Arduino-IRremote
+//******************************************************************************
+
 #include "IRremote.h"
 #include "IRremoteInt.h"
-
-//==============================================================================
-//                           N   N  EEEEE   CCCC
-//                           NN  N  E      C
-//                           N N N  EEE    C
-//                           N  NN  E      C
-//                           N   N  EEEEE   CCCC
-//==============================================================================
 
 #define NEC_BITS          32
 #define NEC_HDR_MARK    9000
@@ -17,39 +15,6 @@
 #define NEC_ZERO_SPACE   560
 #define NEC_RPT_SPACE   2250
 
-//+=============================================================================
-#if SEND_NEC
-/*
-void  IRsend::sendNEC (unsigned long data,  int nbits)
-{
-	// Set IR carrier frequency
-	enableIROut(38);
-
-	// Header
-	mark(NEC_HDR_MARK);
-	space(NEC_HDR_SPACE);
-
-	// Data
-	for (unsigned long  mask = 1UL << (nbits - 1);  mask;  mask >>= 1) {
-		if (data & mask) {
-			mark(NEC_BIT_MARK);
-			space(NEC_ONE_SPACE);
-		} else {
-			mark(NEC_BIT_MARK);
-			space(NEC_ZERO_SPACE);
-		}
-	}
-
-	// Footer
-	mark(NEC_BIT_MARK);
-	space(0);  // Always end with the LED off
-}
-*/
-#endif
-
-//+=============================================================================
-// NECs have a repeat only 4 items long
-//
 #if DECODE_NEC
 bool  IRrecv::decodeNEC (decode_results *results)
 {
@@ -79,11 +44,11 @@ bool  IRrecv::decodeNEC (decode_results *results)
 	offset++;
 
 	// Build the data
-	for (int i = 0;  i < NEC_BITS;  i++) {
+	for (int i = 0; i < NEC_BITS; i++) {
 		// Check data "mark"
 		if (!MATCH_MARK(results->rawbuf[offset], NEC_BIT_MARK))  return false ;
 		offset++;
-        // Suppend this bit
+		// Suppend this bit
 		if      (MATCH_SPACE(results->rawbuf[offset], NEC_ONE_SPACE ))  data = (data << 1) | 1 ;
 		else if (MATCH_SPACE(results->rawbuf[offset], NEC_ZERO_SPACE))  data = (data << 1) | 0 ;
 		else                                                            return false ;

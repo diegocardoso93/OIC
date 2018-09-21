@@ -1,32 +1,25 @@
 //******************************************************************************
-// IRremote
-// Version 2.0.1 June, 2015
-// Copyright 2009 Ken Shirriff
-// For details, see http://arcfn.com/2009/08/multi-protocol-infrared-remote-library.html
-//
-// Modified by Paul Stoffregen <paul@pjrc.com> to support other boards and timers
-// Modified  by Mitra Ardron <mitra@mitra.biz>
-// Added Sanyo and Mitsubishi controllers
-// Modified Sony to spot the repeat codes that some Sony's send
-//
-// Interrupt code based on NECIRrcv by Joe Knapp
-// http://www.arduino.cc/cgi-bin/yabb2/YaBB.pl?num=1210243556
-// Also influenced by http://zovirl.com/2008/11/12/building-a-universal-remote-with-an-arduino/
-//
-// JVC and Panasonic protocol added by Kristian Lauszus (Thanks to zenwheel and other people at the original blog post)
-// LG added by Darryl Smith (based on the JVC protocol)
-// Whynter A/C ARC-110WD added by Francesco Meschia
+// OIC - Omnidirecional Infrared Center - 2018
+// IR Remote NEC Protocol
+// Based on https://github.com/z3t0/Arduino-IRremote
 //******************************************************************************
 
-// Defining IR_GLOBAL here allows us to declare the instantiation of global variables
 #define IR_GLOBAL
 #	include "IRremote.h"
 #	include "IRremoteInt.h"
 #undef IR_GLOBAL
 
 #include <iostream>
+#include <chrono>
+#include <iostream>
+#include <future>
+#include <ctime>
 
-//+=============================================================================
+/* mraa headers */
+#include "mraa/common.hpp"
+#include "mraa/gpio.hpp"
+
+// **
 // The match functions were (apparently) originally MACROs to improve code speed
 //   (although this would have bloated the code) hence the names being CAPS
 // A later release implemented debug output and so they needed to be converted
@@ -56,7 +49,7 @@ int  MATCH (int measured,  int desired)
  	return passed;
 }
 
-//+========================================================
+// **
 // Due to sensor lag, when received, Marks tend to be 100us too long
 //
 int  MATCH_MARK (int measured_ticks,  int desired_us)
@@ -82,7 +75,7 @@ int  MATCH_MARK (int measured_ticks,  int desired_us)
  	return passed;
 }
 
-//+========================================================
+// **
 // Due to sensor lag, when received, Spaces tend to be 100us too short
 //
 int  MATCH_SPACE (int measured_ticks,  int desired_us)
@@ -108,9 +101,9 @@ int  MATCH_SPACE (int measured_ticks,  int desired_us)
  	return passed;
 }
 
-//+=============================================================================
+// **
 // Interrupt Service Routine - Fires every 50uS
-// TIMER2 interrupt code to collect raw data.
+// Interrupt code to collect raw data.
 // Widths of alternating SPACE, MARK are recorded in rawbuf.
 // Recorded in ticks of 50uS [microseconds, 0.000050 seconds]
 // 'rawlen' counts the number of entries recorded so far.
@@ -121,165 +114,81 @@ int  MATCH_SPACE (int measured_ticks,  int desired_us)
 //   Gap width is recorded; Ready is cleared; New logging starts
 //
 
-#include <chrono>
-#include <iostream>
-#include <future>
-#include <ctime>
-
-/* mraa headers */
-#include "mraa/common.hpp"
-#include "mraa/gpio.hpp"
-
-void isr_timer_ir() {
-
-mraa::Result status;
-
-mraa::Gpio gpioir(irparams.recvpin);
-status = gpioir.dir(mraa::DIR_IN);
-if (status != mraa::SUCCESS) {
-  printError(status);
-   return;
-}
-
-	// Read if IR Receiver -> SPACE [xmt LED off] or a MARK [xmt LED on]
-	// digitalRead() is very slow. Optimisation is possible, but makes the code unportable
-	//uint8_t  irdata = (uint8_t)digitalRead(irparams.recvpin);
-printf("%d", GAP_TICKS);
-while (1) {
-	//uint8_t  irdata = (uint8_t) data[i];
-	//std::cout << "from_tmr\n";
-
-        std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
-
-	uint8_t  irdata = (uint8_t)gpioir.read();
-
-	irparams.timer++;  // One more 50uS tick
-
-	if (irparams.rawlen >= RAWBUF)  irparams.rcvstate = STATE_OVERFLOW ;  // Buffer overflow
-
-	switch(irparams.rcvstate) {
-		//......................................................................
-		case STATE_IDLE: // In the middle of a gap
-			if (irdata == MARK) {
-				if (irparams.timer < GAP_TICKS)  {  // Not big enough to be a gap.
-					irparams.timer = 0;
-				} else {
-					// Gap just ended; Record duration; Start recording transmission
-					irparams.overflow                  = false;
-					irparams.rawlen                    = 0;
-					irparams.rawbuf[irparams.rawlen++] = irparams.timer;
-					irparams.timer                     = 0;
-					irparams.rcvstate                  = STATE_MARK;
-				}
-			}
-			break;
-		//......................................................................
-		case STATE_MARK:  // Timing Mark
-			if (irdata == SPACE) {   // Mark ended; Record time
-				irparams.rawbuf[irparams.rawlen++] = irparams.timer;
-				irparams.timer                     = 0;
-				irparams.rcvstate                  = STATE_SPACE;
-			}
-			break;
-		//......................................................................
-		case STATE_SPACE:  // Timing Space
-			if (irdata == MARK) {  // Space just ended; Record time
-				irparams.rawbuf[irparams.rawlen++] = irparams.timer;
-				irparams.timer                     = 0;
-				irparams.rcvstate                  = STATE_MARK;
-
-			} else if (irparams.timer > GAP_TICKS) {  // Space
-					// A long Space, indicates gap between codes
-					// Flag the current code as ready for processing
-					// Switch to STOP
-					// Don't reset timer; keep counting Space width
-					irparams.rcvstate = STATE_STOP;
-			}
-			break;
-		//......................................................................
-		case STATE_STOP:  // Waiting; Measuring Gap
-		 	if (irdata == MARK)  irparams.timer = 0 ;  // Reset gap timer
-		 	break;
-		//......................................................................
-		case STATE_OVERFLOW:  // Flag up a read overflow; Stop the State Machine
-			irparams.overflow = true;
-			irparams.rcvstate = STATE_STOP;
-		 	break;
-	}
-std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
-	std::chrono::duration<double> time_span = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
-//        std::cout << "It took me " << time_span.count() << " seconds.";
-        std::this_thread::sleep_for(std::chrono::microseconds(50-(int)time_span.count()*1000000));
-}
-
-}
-
-
-/*
-#ifdef IR_TIMER_USE_ESP32
-void IRTimer()
-#else
-ISR (TIMER_INTR_NAME)
-#endif
+void isr_timer_ir()
 {
-	TIMER_RESET;
 
-	// Read if IR Receiver -> SPACE [xmt LED off] or a MARK [xmt LED on]
-	// digitalRead() is very slow. Optimisation is possible, but makes the code unportable
-	uint8_t  irdata = (uint8_t)digitalRead(irparams.recvpin);
+	mraa::Result status;
 
-	irparams.timer++;  // One more 50uS tick
-	if (irparams.rawlen >= RAWBUF)  irparams.rcvstate = STATE_OVERFLOW ;  // Buffer overflow
+	mraa::Gpio gpioir(irparams.recvpin);
+	status = gpioir.dir(mraa::DIR_IN);
+	if (status != mraa::SUCCESS) {
+  	printError(status);
+   	return;
+	}
 
-	switch(irparams.rcvstate) {
-		//......................................................................
-		case STATE_IDLE: // In the middle of a gap
-			if (irdata == MARK) {
-				if (irparams.timer < GAP_TICKS)  {  // Not big enough to be a gap.
-					irparams.timer = 0;
+	while (1) {
+	
+		std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
+		// Read if IR Receiver -> SPACE [xmt LED off] or a MARK [xmt LED on]
+	
+		uint8_t irdata = (uint8_t)gpioir.read();
 
-				} else {
-					// Gap just ended; Record duration; Start recording transmission
-					irparams.overflow                  = false;
-					irparams.rawlen                    = 0;
+		irparams.timer++;  // One more 50uS tick
+
+		if (irparams.rawlen >= RAWBUF)  irparams.rcvstate = STATE_OVERFLOW ;  // Buffer overflow
+
+		switch (irparams.rcvstate) {
+			//......................................................................
+			case STATE_IDLE: // In the middle of a gap
+				if (irdata == MARK) {
+					if (irparams.timer < GAP_TICKS)  {  // Not big enough to be a gap.
+						irparams.timer = 0;
+					} else {
+						// Gap just ended; Record duration; Start recording transmission
+						irparams.overflow                  = false;
+						irparams.rawlen                    = 0;
+						irparams.rawbuf[irparams.rawlen++] = irparams.timer;
+						irparams.timer                     = 0;
+						irparams.rcvstate                  = STATE_MARK;
+					}
+				}
+				break;
+			//......................................................................
+			case STATE_MARK:  // Timing Mark
+				if (irdata == SPACE) {   // Mark ended; Record time
+					irparams.rawbuf[irparams.rawlen++] = irparams.timer;
+					irparams.timer                     = 0;
+					irparams.rcvstate                  = STATE_SPACE;
+				}
+				break;
+			//......................................................................
+			case STATE_SPACE:  // Timing Space
+				if (irdata == MARK) {  // Space just ended; Record time
 					irparams.rawbuf[irparams.rawlen++] = irparams.timer;
 					irparams.timer                     = 0;
 					irparams.rcvstate                  = STATE_MARK;
-				}
-			}
-			break;
-		//......................................................................
-		case STATE_MARK:  // Timing Mark
-			if (irdata == SPACE) {   // Mark ended; Record time
-				irparams.rawbuf[irparams.rawlen++] = irparams.timer;
-				irparams.timer                     = 0;
-				irparams.rcvstate                  = STATE_SPACE;
-			}
-			break;
-		//......................................................................
-		case STATE_SPACE:  // Timing Space
-			if (irdata == MARK) {  // Space just ended; Record time
-				irparams.rawbuf[irparams.rawlen++] = irparams.timer;
-				irparams.timer                     = 0;
-				irparams.rcvstate                  = STATE_MARK;
 
-			} else if (irparams.timer > GAP_TICKS) {  // Space
-					// A long Space, indicates gap between codes
-					// Flag the current code as ready for processing
-					// Switch to STOP
-					// Don't reset timer; keep counting Space width
-					irparams.rcvstate = STATE_STOP;
-			}
-			break;
-		//......................................................................
-		case STATE_STOP:  // Waiting; Measuring Gap
-		 	if (irdata == MARK)  irparams.timer = 0 ;  // Reset gap timer
-		 	break;
-		//......................................................................
-		case STATE_OVERFLOW:  // Flag up a read overflow; Stop the State Machine
-			irparams.overflow = true;
-			irparams.rcvstate = STATE_STOP;
-		 	break;
+				} else if (irparams.timer > GAP_TICKS) {  // Space
+						// A long Space, indicates gap between codes
+						// Flag the current code as ready for processing
+						// Switch to STOP
+						// Don't reset timer; keep counting Space width
+						irparams.rcvstate = STATE_STOP;
+				}
+				break;
+			//......................................................................
+			case STATE_STOP:  // Waiting; Measuring Gap
+				if (irdata == MARK)  irparams.timer = 0 ;  // Reset gap timer
+				break;
+			//......................................................................
+			case STATE_OVERFLOW:  // Flag up a read overflow; Stop the State Machine
+				irparams.overflow = true;
+				irparams.rcvstate = STATE_STOP;
+				break;
+		}
+		std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
+		std::chrono::duration<double> time_span = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
+		std::this_thread::sleep_for(std::chrono::microseconds(50-(int)time_span.count()*1000000));
 	}
+
 }
-*/

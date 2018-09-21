@@ -1,21 +1,14 @@
 //******************************************************************************
-// IRremote
-// Version 2.0.1 June, 2015
-// Copyright 2009 Ken Shirriff
-// For details, see http://arcfn.com/2009/08/multi-protocol-infrared-remote-library.html
-//
-// Modified by Paul Stoffregen <paul@pjrc.com> to support other boards and timers
-//
-// Interrupt code based on NECIRrcv by Joe Knapp
-// http://www.arduino.cc/cgi-bin/yabb2/YaBB.pl?num=1210243556
-// Also influenced by http://zovirl.com/2008/11/12/building-a-universal-remote-with-an-arduino/
-//
-// JVC and Panasonic protocol added by Kristian Lauszus (Thanks to zenwheel and other people at the original blog post)
-// Whynter A/C ARC-110WD added by Francesco Meschia
+// OIC - Omnidirecional Infrared Center - 2018
+// IR Remote NEC Protocol
+// Based on https://github.com/z3t0/Arduino-IRremote
 //******************************************************************************
 
 #ifndef IRremoteint_h
 #define IRremoteint_h
+
+// microseconds per clock interrupt tick
+#define USECPERTICK    50
 
 //------------------------------------------------------------------------------
 // This handles definition and access to global variables
@@ -97,9 +90,6 @@ EXTERN  volatile irparams_t  irparams;
 //
 #define MARK   0
 #define SPACE  1
-
-// All board specific stuff has been moved to its own file, included here.
-#include "boarddefs.h"
 
 void isr_timer_ir();
 
