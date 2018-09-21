@@ -1,6 +1,7 @@
 #include <iostream>
 #include <thread>
 #include <chrono>
+#include <functional>
 
 using namespace std;
 
@@ -11,7 +12,7 @@ class Timer
 
 public:
     typedef chrono::microseconds Interval;
-    typedef function<void(void)> Timeout;
+    typedef std::function<void(void)> Timeout;
 
     void start(const Interval &interval,
                const Timeout &timeout)
@@ -37,12 +38,17 @@ public:
 
 int main(void)
 {
-    Timer tHello;
-    tHello.start(chrono::microseconds(1000), []{
+    Timer tHello, t2;
+    tHello.start(chrono::microseconds(100000), []{
         cout << "Hello!" << endl;
     });
 
-    this_thread::sleep_for(chrono::seconds(1));
+    t2.start(chrono::microseconds(100000), [] {
+      cout << "aaa" << endl;
+    });
+
+    //this_thread::sleep_for(chrono::seconds(1));
+    printf("awdwa");
     tHello.stop();
     return 0;
 }

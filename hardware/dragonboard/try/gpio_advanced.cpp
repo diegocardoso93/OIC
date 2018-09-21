@@ -34,7 +34,7 @@
 #include "mraa/common.hpp"
 #include "mraa/gpio.hpp"
 
-#define GPIO_PIN 6
+#define GPIO_PIN 33
 
 void
 int_handler(void* args)
