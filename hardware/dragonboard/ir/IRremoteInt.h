@@ -18,17 +18,6 @@
 #define IRremoteint_h
 
 //------------------------------------------------------------------------------
-// Include the right Arduino header
-//
-#if defined(ARDUINO) && (ARDUINO >= 100)
-#	include <Arduino.h>
-#else
-#	if !defined(IRPRONTO)
-#		include <WProgram.h>
-#	endif
-#endif
-
-//------------------------------------------------------------------------------
 // This handles definition and access to global variables
 //
 #ifdef IR_GLOBAL
@@ -36,6 +25,8 @@
 #else
 #	define EXTERN extern
 #endif
+
+typedef unsigned char uint8_t;
 
 //------------------------------------------------------------------------------
 // Information for the Interrupt Service Routine
@@ -109,5 +100,7 @@ EXTERN  volatile irparams_t  irparams;
 
 // All board specific stuff has been moved to its own file, included here.
 #include "boarddefs.h"
+
+void isr_timer();
 
 #endif

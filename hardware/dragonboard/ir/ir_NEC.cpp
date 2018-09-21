@@ -19,6 +19,7 @@
 
 //+=============================================================================
 #if SEND_NEC
+/*
 void  IRsend::sendNEC (unsigned long data,  int nbits)
 {
 	// Set IR carrier frequency
@@ -43,6 +44,7 @@ void  IRsend::sendNEC (unsigned long data,  int nbits)
 	mark(NEC_BIT_MARK);
 	space(0);  // Always end with the LED off
 }
+*/
 #endif
 
 //+=============================================================================
