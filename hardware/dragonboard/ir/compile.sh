@@ -1,6 +1,6 @@
 
 
-g++ -pthread \
+g++ -pthread -lmraa \
 main.cpp \
 IRremote.h \
 IRremote.cpp \

@@ -86,10 +86,10 @@ EXTERN  volatile irparams_t  irparams;
 #define UTOL            (1.0 + (TOLERANCE/100.))
 
 // Minimum gap between IR transmissions
-#define _GAP            5000
+#define _GAP            50000
 #define GAP_TICKS       (_GAP/USECPERTICK)
 
-#define TICKS_LOW(us)   ((int)(((us)*LTOL/USECPERTICK)))
+#define TICKS_LOW(us)   ((int)(((us)*LTOL/USECPERTICK))/2)
 #define TICKS_HIGH(us)  ((int)(((us)*UTOL/USECPERTICK + 1)))
 
 //------------------------------------------------------------------------------
@@ -101,6 +101,6 @@ EXTERN  volatile irparams_t  irparams;
 // All board specific stuff has been moved to its own file, included here.
 #include "boarddefs.h"
 
-void isr_timer();
+void isr_timer_ir();
 
 #endif

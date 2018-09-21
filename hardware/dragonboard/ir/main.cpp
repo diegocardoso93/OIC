@@ -22,10 +22,11 @@ IRrecv irrecv(33);
 
 int main ()
 {
-    auto future = std::async(timer);
-    std::cout << "test\n";
-    auto future2 = std::async(isr_timer_ir);
+    //auto future = std::async(timer);
+    //std::cout << "test\n";
+
     irrecv.enableIRIn();
+    auto future2 = std::async(isr_timer_ir);
 
     while (1) {
 
@@ -36,11 +37,9 @@ int main ()
             printf("\n");           // Blank line between entries
             irrecv.resume();              // Prepare for the next value
         }
-        std::this_thread::sleep_for(std::chrono::seconds(1));
+        //std::this_thread::sleep_for(std::chrono::seconds(1));
     }
-    
-    //std::this_thread::sleep_for(std::chrono::seconds(10));
-    //std::cout << "test2\n";
+
 }
 
 
@@ -80,7 +79,7 @@ void  dumpCode(decode_results *results) {
 
   // Dump data
   for (int i = 1;  i < results->rawlen;  i++) {
-    //printf(results->rawbuf[i] * USECPERTICK, DEC);
+    printf("%d", results->rawbuf[i] * USECPERTICK);
     if ( i < results->rawlen-1 ) printf(","); // ',' not needed on last one
     if (!(i & 1))  printf(" ");
   }

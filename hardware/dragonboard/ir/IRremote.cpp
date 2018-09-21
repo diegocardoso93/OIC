@@ -124,6 +124,7 @@ int  MATCH_SPACE (int measured_ticks,  int desired_us)
 #include <chrono>
 #include <iostream>
 #include <future>
+#include <ctime>
 
 /* mraa headers */
 #include "mraa/common.hpp"
@@ -132,20 +133,28 @@ int  MATCH_SPACE (int measured_ticks,  int desired_us)
 void isr_timer_ir() {
 
 mraa::Result status;
-mraa::Gpio gpio(irparams.recvpin);
+
+mraa::Gpio gpioir(irparams.recvpin);
+status = gpioir.dir(mraa::DIR_IN);
+if (status != mraa::SUCCESS) {
+  printError(status);
+   return;
+}
 
 	// Read if IR Receiver -> SPACE [xmt LED off] or a MARK [xmt LED on]
 	// digitalRead() is very slow. Optimisation is possible, but makes the code unportable
 	//uint8_t  irdata = (uint8_t)digitalRead(irparams.recvpin);
-
+printf("%d", GAP_TICKS);
 while (1) {
 	//uint8_t  irdata = (uint8_t) data[i];
 	//std::cout << "from_tmr\n";
 
-	uint8_t  irdata = (uint8_t)gpio.read(irparams.recvpin);
+        std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
+
+	uint8_t  irdata = (uint8_t)gpioir.read();
 
 	irparams.timer++;  // One more 50uS tick
-	
+
 	if (irparams.rawlen >= RAWBUF)  irparams.rcvstate = STATE_OVERFLOW ;  // Buffer overflow
 
 	switch(irparams.rcvstate) {
@@ -171,7 +180,6 @@ while (1) {
 				irparams.timer                     = 0;
 				irparams.rcvstate                  = STATE_SPACE;
 			}
-			i++;
 			break;
 		//......................................................................
 		case STATE_SPACE:  // Timing Space
@@ -187,7 +195,6 @@ while (1) {
 					// Don't reset timer; keep counting Space width
 					irparams.rcvstate = STATE_STOP;
 			}
-			i++;
 			break;
 		//......................................................................
 		case STATE_STOP:  // Waiting; Measuring Gap
@@ -199,7 +206,10 @@ while (1) {
 			irparams.rcvstate = STATE_STOP;
 		 	break;
 	}
-	std::this_thread::sleep_for(std::chrono::microseconds(50));
+std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
+	std::chrono::duration<double> time_span = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
+//        std::cout << "It took me " << time_span.count() << " seconds.";
+        std::this_thread::sleep_for(std::chrono::microseconds(50-(int)time_span.count()*1000000));
 }
 
 }

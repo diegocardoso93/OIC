@@ -28,7 +28,7 @@
 #ifdef F_CPU
 #	define SYSCLOCK  F_CPU     // main Arduino clock
 #else
-#	define SYSCLOCK  16000000  // main Arduino clock
+#	define SYSCLOCK  1200000000 // main DragonBoard clock
 #endif
 
 // microseconds per clock interrupt tick
