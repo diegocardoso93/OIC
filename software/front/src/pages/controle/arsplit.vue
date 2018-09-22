@@ -48,10 +48,13 @@ export default {
         })
     }
   },
-  created() {
-    setInterval(() => {
+  mounted() {
+    this.readTempControl = setInterval(() => {
       this.readTemperature()
     }, 5000)
+  },
+  destroyed() {
+    clearInterval(this.readTempControl)
   }
 }
 </script>
