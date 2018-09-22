@@ -15,7 +15,7 @@
 
 #define GPIO_CS 18
 
-static uint8_t tx[3], rx[3];
+static uint8_t tx[3] = {0x01, 0x80, 0x00}, rx[3];
 
 int main()
 {
@@ -26,7 +26,7 @@ int main()
   if (gpio_cs == NULL) {
     goto fail;
   }
-  libsoc_gpio_set_direction(gpio_cs,OUTPUT);
+  libsoc_gpio_set_direction(gpio_cs, OUTPUT);
   if (libsoc_gpio_get_direction(gpio_cs) != OUTPUT) {
     printf("Failed to set direction to OUTPUT!\n");
     goto fail; 
@@ -41,22 +41,17 @@ int main()
   libsoc_spi_set_speed(spi_dev, 10000);
   libsoc_spi_set_bits_per_word(spi_dev, BITS_8);
 
-  tx[0] = 0x01;
-  tx[1] = 0x80;
-  tx[2] = 0x00;
-  while (1) {
-    libsoc_gpio_set_level(gpio_cs, HIGH);
-    usleep(50);
-    libsoc_gpio_set_level(gpio_cs, LOW);
-    libsoc_spi_rw(spi_dev, tx, rx, 3);
-    libsoc_gpio_set_level(gpio_cs, HIGH);
+  libsoc_gpio_set_level(gpio_cs, HIGH);
+  usleep(50);
+  libsoc_gpio_set_level(gpio_cs, LOW);
+  libsoc_spi_rw(spi_dev, tx, rx, 3);
+  libsoc_gpio_set_level(gpio_cs, HIGH);
 
-    adc_value = (rx[1]<<8)&0b1100000000;
-    adc_value |= (rx[2]&0xff);
-    // 10bits 5V
-    printf("%2.1f\n", (adc_value*5.0/1023-0.5)*100);
-    sleep(1);
-  }
+  adc_value = (rx[1]<<8)&0b1100000000;
+  adc_value |= (rx[2]&0xff);
+  // 10bits 5V
+  printf("%2.1f", (adc_value*5.0/1023-0.5)*100);
+
 free:
   libsoc_spi_free(spi_dev);
 fail:

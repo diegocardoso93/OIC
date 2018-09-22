@@ -3,22 +3,15 @@ const Router = require('koa-router')
 const app = new Koa()
 const router = new Router()
 const cors = require('@koa/cors');
+const dgn = require('./dragonboard-native')
 
 const mqtt = require('mqtt')
 
 const client  = mqtt.connect('mqtt://localhost')
 
 client.on('connect', () => {
-  client.subscribe('write/temperatura', (err) => {})
+  // client.subscribe('write/temperatura', (err) => {})
 })
-
-// Begin periodic calls
-let state = {
-  temperatura: null
-}
-setInterval(() => {
-  client.publish('read/temperatura', null) // Mais tarde o broker irá fazer publish no topic write/temperatura
-}, 10000);
 
 client.on('message', (topic, message) => {
   console.log(message.toString())
@@ -33,7 +26,12 @@ router.get('/', (ctx, next) => {
 })
 
 router.get('/read/temperatura', (ctx, next) => {
-  ctx.body = {status: 200, temperatura: state.temperatura}
+  return new Promise((resolve, reject) => {
+       dgn.call('temperature').then((data) => {
+       ctx.body = {status: 200, temperatura: data.toString('utf8')}
+       resolve()
+     })
+  })
 })
 
 router.get('/tv/:button', (ctx, next) => {
@@ -60,4 +58,4 @@ app
   .use(cors({origin: (ctx) => { return '*' }}))
   .use(router.routes())
 
-app.listen(3000)
+app.listen(3000, '0.0.0.0')
