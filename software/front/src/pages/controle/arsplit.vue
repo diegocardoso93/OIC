@@ -2,7 +2,7 @@
   <q-page id="split">
     <div style="width: 100%; text-align: center">
       <div class="temp_container">
-        <h1 style="margin: 10px">22ºC</h1>
+        <h1 style="margin: 10px" v-text="temperatura"></h1>
       </div>
     </div>
     <q-btn round color="blue" size="3vh" icon="power_settings_new" class="power" v-on:click="buttonPressed(power)" />
@@ -23,6 +23,7 @@
 export default {
   data () {
     return {
+      temperatura: ''
     }
   },
   methods: {
@@ -34,7 +35,23 @@ export default {
         .catch(() => {
           alert('error')
         })
+    },
+    readTemperature: function () {
+      this.$axios.get('http://' + location.hostname + ':3000/read/temperatura')
+        .then((response) => {
+          if (response.status === 200) {
+            this.data.temperatura = response.temperatura + '°C'
+          }
+        })
+        .catch(() => {
+          console.log('error on read temperature')
+        })
     }
+  },
+  created() {
+    setInterval(() => {
+      this.readTemperature()
+    }, 5000)
   }
 }
 </script>

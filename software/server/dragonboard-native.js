@@ -4,11 +4,11 @@ class DragonBoardNative {
 
   constructor () {
     this.programs = {
-    temperature: {
-      name: 'temperature',
-      path: '../../hardware/dragonboard/temperature/main',
-      msg: null
-    }
+      temperature: {
+        name: 'temperature',
+        path: '../../hardware/dragonboard/temperature/main',
+        msg: null
+      }
     }
   }
 
@@ -34,7 +34,6 @@ class DragonBoardNative {
       program.stderr.on('data', (data) => {
         reject(data)
       })
-
       program.on('exit', function (code, signal) {
         resolve({code: code, signal: signal})
       })

@@ -129,8 +129,9 @@ mraa_init();
   auto future2 = std::async(isr_timer_ir);
 
   while (1) {
-      sendNEC(0x20DF10EF, 32); //0x20DF10EF 0xFB04F708
-      sleep(1);
+      // \/ dont work due pin toggle latency
+      //sendNEC(0x20DF10EF, 32); //0x20DF10EF 0xFB04F708
+      //sleep(1);
 
       decode_results results;
 
