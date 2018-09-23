@@ -10,22 +10,22 @@
     <q-btn color="dark" size="2vh" class="small-1" icon="search" v-on:click="buttonPressed('search')" />
     <q-btn color="dark" size="2vh" class="small-1" icon="home" v-on:click="buttonPressed('home')" />
 
-    <q-btn color="dark" size="3vh" label="1" class="number" v-on:click="buttonPressed('1')" />
-    <q-btn color="dark" size="3vh" label="2" class="number" v-on:click="buttonPressed('2')" />
-    <q-btn color="dark" size="3vh" label="3" class="number" v-on:click="buttonPressed('3')" />
-    <q-btn color="dark" size="3vh" label="4" class="number" v-on:click="buttonPressed('4')" />
-    <q-btn color="dark" size="3vh" label="5" class="number" v-on:click="buttonPressed('5')" />
-    <q-btn color="dark" size="3vh" label="6" class="number" v-on:click="buttonPressed('6')" />
-    <q-btn color="dark" size="3vh" label="7" class="number" v-on:click="buttonPressed('7')" />
-    <q-btn color="dark" size="3vh" label="8" class="number" v-on:click="buttonPressed('8')" />
-    <q-btn color="dark" size="3vh" label="9" class="number" v-on:click="buttonPressed('9')" />
+    <q-btn color="dark" size="3vh" label="n1" class="number" v-on:click="buttonPressed('1')" />
+    <q-btn color="dark" size="3vh" label="n2" class="number" v-on:click="buttonPressed('2')" />
+    <q-btn color="dark" size="3vh" label="n3" class="number" v-on:click="buttonPressed('3')" />
+    <q-btn color="dark" size="3vh" label="n4" class="number" v-on:click="buttonPressed('4')" />
+    <q-btn color="dark" size="3vh" label="n5" class="number" v-on:click="buttonPressed('5')" />
+    <q-btn color="dark" size="3vh" label="n6" class="number" v-on:click="buttonPressed('6')" />
+    <q-btn color="dark" size="3vh" label="n7" class="number" v-on:click="buttonPressed('7')" />
+    <q-btn color="dark" size="3vh" label="n8" class="number" v-on:click="buttonPressed('8')" />
+    <q-btn color="dark" size="3vh" label="n9" class="number" v-on:click="buttonPressed('9')" />
     <q-btn color="dark" size="2vh" label="list" class="number" v-on:click="buttonPressed('list')" />
-    <q-btn color="dark" size="3vh" label="0" class="number" v-on:click="buttonPressed('0')" />
+    <q-btn color="dark" size="3vh" label="n0" class="number" v-on:click="buttonPressed('0')" />
     <q-btn color="dark" size="2vh" label="flashbk" class="number" v-on:click="buttonPressed('flashbk')" />
 
     <div style="width:33%;float:left">
-      <q-btn color="blue-grey" size="3vh" label="Vol" icon-right="arrow_drop_up" class="lg-in" v-on:click="buttonPressed('vol+')" />
-      <q-btn color="blue-grey" size="3vh" label="Ch" icon-right="add" class="lg-in" v-on:click="buttonPressed('ch+')" />
+      <q-btn color="blue-grey" size="3vh" label="Vol" icon-right="arrow_drop_up" class="lg-in" v-on:click="buttonPressed('volp')" />
+      <q-btn color="blue-grey" size="3vh" label="Ch" icon-right="add" class="lg-in" v-on:click="buttonPressed('chp')" />
     </div>
     <div style="width:33%;float:left">
       <q-btn color="dark" size="2vh" label="fav" class="sm-in" v-on:click="buttonPressed('fav')" />
@@ -33,8 +33,8 @@
       <q-btn color="dark" size="2vh" label="mute" class="sm-in" v-on:click="buttonPressed('mute')" />
     </div>
     <div style="width:33%;float:left">
-      <q-btn color="blue-grey" size="3vh" label="Vol" icon-right="arrow_drop_down" class="lg-in" v-on:click="buttonPressed('vol-')" />
-      <q-btn color="blue-grey" size="3vh" label="Ch" icon-right="remove" class="lg-in" v-on:click="buttonPressed('ch-')"/>
+      <q-btn color="blue-grey" size="3vh" label="Vol" icon-right="arrow_drop_down" class="lg-in" v-on:click="buttonPressed('volm')" />
+      <q-btn color="blue-grey" size="3vh" label="Ch" icon-right="remove" class="lg-in" v-on:click="buttonPressed('chm')"/>
     </div>
 
     <q-btn color="blue-grey" size="2vh" icon="settings" class="number" v-on:click="buttonPressed('settings')" />

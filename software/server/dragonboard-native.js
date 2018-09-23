@@ -1,7 +1,6 @@
 const { spawn } = require('child_process');
 
 class DragonBoardNative {
-
   constructor () {
     this.programs = {
       temperature: {

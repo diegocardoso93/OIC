@@ -5,8 +5,8 @@
         <h1 style="margin: 10px" v-text="temperatura"></h1>
       </div>
     </div>
-    <q-btn round color="blue" size="3vh" icon="power_settings_new" class="power" v-on:click="buttonPressed(power)" />
-    <button tabindex="0" type="button" v-on:click="buttonPressed('tv')" class="q-btn inline relative-position q-btn-item non-selectable power q-btn-round q-focusable q-hoverable bg-positive text-white" style="font-size: 3vh;float: right">
+    <q-btn round color="blue" size="3vh" icon="power_settings_new" class="power" v-on:click="buttonPressed('power')" />
+    <button tabindex="0" type="button" v-on:click="buttonPressed('mode')" class="q-btn inline relative-position q-btn-item non-selectable power q-btn-round q-focusable q-hoverable bg-positive text-white" style="font-size: 3vh;float: right">
       <div class="q-btn-inner row col items-center justify-center">mode</div>
     </button>
     <br/>
