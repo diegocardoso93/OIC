@@ -28,7 +28,7 @@ class ESP32_RMT
 		void sendRaw (const uint8_t[], uint8_t,  uint8_t);
 		void send(uint8_t);
 	
-		void necSend(uint16_t, uint16_t); 	
+		void necSend(uint32_t); 	
 		
 	private: 
 		void rmt_tx_init();
@@ -37,7 +37,7 @@ class ESP32_RMT
 		void nec_fill_item_bit_one(rmt_item32_t* );
 		void nec_fill_item_bit_zero(rmt_item32_t*);
 		void nec_fill_item_end(rmt_item32_t* );
-		int nec_build_items(int , rmt_item32_t* , int , uint16_t , uint16_t);	
+		int nec_build_items(int , rmt_item32_t* , int , uint32_t);	
 		
 		uint8_t txChannel = 1;
 		uint8_t rxChannel = 0;

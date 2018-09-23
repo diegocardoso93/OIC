@@ -30,13 +30,12 @@
 
 #define NEC_FREQ 38000
 
-//send 1 frame of NEC data.
-
-void ESP32_RMT::necSend(uint16_t addr, uint16_t cmd)
+void ESP32_RMT::necSend(uint32_t cmd)
 {
 	rmt_config_t rmt_tx;
 	rmt_tx.channel = (rmt_channel_t)txChannel;
 	rmt_tx.gpio_num =(gpio_num_t) txPin;
+	//Serial.write(rmt_tx.gpio_num+48);return;
 	rmt_tx.mem_block_num = 1;
 	rmt_tx.clk_div = RMT_CLK_DIV;
 	rmt_tx.tx_config.loop_en = false;
@@ -50,35 +49,31 @@ void ESP32_RMT::necSend(uint16_t addr, uint16_t cmd)
 	rmt_config(&rmt_tx);
 	rmt_driver_install(rmt_tx.channel, 0, RMT_INTR_NUM);
 	
-	//printf("cmd: %d, data: %d \n\r ", cmd, addr);
     int channel = RMT_TX_CHANNEL;
     int nec_tx_num = RMT_TX_DATA_NUM;
   
-      //  ESP_LOGI(NEC_TAG, "RMT TX DATA");
-        size_t size = (sizeof(rmt_item32_t) * NEC_DATA_ITEM_NUM * nec_tx_num);
-        //each item represent a cycle of waveform.
-        rmt_item32_t* item = (rmt_item32_t*) malloc(size);
-        int item_num = NEC_DATA_ITEM_NUM * nec_tx_num;
-		//printf("item_num:%d \n\r", item_num);
-        memset((void*) item, 0, size);
-        int i, offset = 0;
-        while(1) {
-            //To build a series of waveforms.
-            i = nec_build_items((rmt_channel_t)channel, item + offset, item_num - offset,  addr, cmd);
-            if(i < 0) {
-                break;
-            }
-            cmd++;
-            addr++;
-            offset += i;
-        }
-        //To send data according to the waveform items.
-        rmt_write_items((rmt_channel_t)channel, item, item_num, true);
-        //Wait until sending is done.
-        rmt_wait_tx_done((rmt_channel_t)channel);
-        //before we free the data, make sure sending is already done.
-        free(item);
-    
+	size_t size = (sizeof(rmt_item32_t) * NEC_DATA_ITEM_NUM * nec_tx_num);
+	//each item represent a cycle of waveform.
+	rmt_item32_t* item = (rmt_item32_t*) malloc(size);
+	int item_num = NEC_DATA_ITEM_NUM * nec_tx_num;
+	//printf("item_num:%d \n\r", item_num);
+	memset((void*) item, 0, size);
+	int i, offset = 0;
+	while(1) {
+		//To build a series of waveforms.
+		i = nec_build_items((rmt_channel_t)channel, item + offset, item_num - offset, cmd);
+		if(i < 0) {
+			break;
+		}
+		cmd++;
+		offset += i;
+	}
+	//To send data according to the waveform items.
+	rmt_write_items((rmt_channel_t)channel, item, item_num, true);
+	//Wait until sending is done.
+	rmt_wait_tx_done((rmt_channel_t)channel, 100);
+	//before we free the data, make sure sending is already done.
+	free(item);
 }
 
 /*
@@ -124,8 +119,7 @@ void ESP32_RMT::nec_fill_item_end(rmt_item32_t* item)
     nec_fill_item_level(item, NEC_BIT_END, 0x7fff);
 }
 
-
-int ESP32_RMT::nec_build_items(int channel, rmt_item32_t* item, int item_num, uint16_t addr, uint16_t cmd_data)
+int ESP32_RMT::nec_build_items(int channel, rmt_item32_t* item, int item_num, uint32_t cmd_data)
 {
     int i = 0, j = 0;
     if(item_num < NEC_DATA_ITEM_NUM) {
@@ -133,25 +127,14 @@ int ESP32_RMT::nec_build_items(int channel, rmt_item32_t* item, int item_num, ui
     }
     nec_fill_item_header(item++);
     i++;
-    for(j = 0; j < 16; j++) {
-        if(addr & 0x1) {
+	for (unsigned long  mask = 1UL << (32 - 1);  mask;  mask >>= 1) {
+        if(cmd_data & mask) {
             nec_fill_item_bit_one(item);
         } else {
             nec_fill_item_bit_zero(item);
         }
         item++;
         i++;
-        addr >>= 1;
-    }
-    for(j = 0; j < 16; j++) {
-        if(cmd_data & 0x1) {
-            nec_fill_item_bit_one(item);
-        } else {
-            nec_fill_item_bit_zero(item);
-        }
-        item++;
-        i++;
-        cmd_data >>= 1;
     }
     nec_fill_item_end(item);
     i++;

@@ -69,7 +69,7 @@ void ESP32_RMT::send(uint8_t data)
 		//printf("writing items\n\r");
         rmt_write_items((rmt_channel_t)channel, item, 2, true);
         //Wait until sending is done.
-        rmt_wait_tx_done((rmt_channel_t)channel);
+        rmt_wait_tx_done((rmt_channel_t)channel, 100);
         //before we free the data, make sure sending is already done.
         free(item);
     }
