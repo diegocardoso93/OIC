@@ -4,22 +4,16 @@ const assert = require('assert')
 const url = 'mongodb://localhost:27017'
 
 const dbName = 'oic'
-let oicDb
-let mgClient
 
-const mgConnect = () => {
+const mgConnect = (cb) => {
   MongoClient.connect(url, { useNewUrlParser: true }, (err, client) => {
     assert.equal(null, err)
     console.log("Connected successfully to mongo server")
 
-    oicDb = client.db(dbName)
+    const oicDb = client.db(dbName)
 
-    mgClient = client;
-
+    cb(oicDb, client)
   })
-}
-const mgClose = () => {
-  mgClient.close();
 }
 
 const mgFind = function(db, collect, select, callback) {
@@ -61,12 +55,9 @@ const mgRemove = function(db, collect, where, callback) {
 }
 
 module.exports = {
-  oic: oicDb,
-  mgClient: mgClient,
   mgFind: mgFind,
   mgInsert: mgInsert,
   mgUpdate: mgUpdate,
   mgRemove: mgRemove,
-  mgConnect: mgConnect,
-  mgClose: mgClose
+  mgConnect: mgConnect
 }

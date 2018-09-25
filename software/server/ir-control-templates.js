@@ -1,7 +1,7 @@
 
-let IRcontrols = {
+let IRcontrols = [{
 
-    tv: {
+        name: 'tv',
         button: {
             power    : '0x20DF10EF',
             caption  : '',
@@ -47,10 +47,10 @@ let IRcontrols = {
             point3   : '',
             point4   : ''
         },
-        document: 'cfgTvControl' // mongodb document config name
+        cfgKey: 'cfgTvControl' // mongodb cfgKey config name
     },
 
-    split: {
+    {   name: 'split',
         button: {
             power  : '',
             mode   : '',
@@ -61,10 +61,10 @@ let IRcontrols = {
             down   : '',
             swing  : ''
         },
-        document: 'cfgSplitControl'
+        cfgKey: 'cfgSplitControl'
     },
-
-    light: {
+{
+    name: 'light',
         button: {
             brighthness_70  : '',
             brighthness_50  : '',
@@ -90,8 +90,7 @@ let IRcontrols = {
             c11             : '',
             c12             : ''
         },
-        document: 'cfgLightControl'
-    }
-}
+        cfgKey: 'cfgLightControl'
+    }]
 
 module.exports = IRcontrols
