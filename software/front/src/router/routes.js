@@ -35,6 +35,12 @@ const oicControle = {
   children: []
 }
 
+const oicCalibrar = {
+  path: '/home',
+  component: () => import('layouts/Calibrar'),
+  children: []
+}
+
 categories.forEach(category => {
   if (category.extract) {
     return
@@ -42,6 +48,7 @@ categories.forEach(category => {
   category.features.forEach(feature => {
     if (!feature.tabs) {
       oicControle.children.push(lazyLoad('controle/' + feature.hash, feature))
+      oicCalibrar.children.push(lazyLoad('calibrar/' + feature.hash, feature))
     }
   })
 })
@@ -50,6 +57,7 @@ categories.forEach(category => {
 if (process.env.MODE !== 'ssr') {
   routes.push(oicRouter)
   routes.push(oicControle)
+  routes.push(oicCalibrar)
   routes.push({
     path: '/',
     redirect: '/home'

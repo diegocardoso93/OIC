@@ -59,6 +59,11 @@ router.get('/cfg/control', (ctx, next) => {
   ctx.body = {status: 200, control: IRcontrols}
 })
 
+// Feed calibrate state
+router.get('/feed/calibrate', (ctx, next) => {
+  ctx.body = {active: calibrating.active, control: IRcontrols}
+})
+
 router.get('/read/temperatura', (ctx, next) => {
   return new Promise((resolve, reject) => {
        dgn.call('temperature').then((data) => {

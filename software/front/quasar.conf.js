@@ -56,11 +56,13 @@ module.exports = function (ctx) {
         'QItem',
         'QItemMain',
         'QItemSide',
-        'QItemSeparator'
+        'QItemSeparator',
+        'QModal'
       ],
       directives: [
         'Ripple',
-        'GoBack'
+        'GoBack',
+        'CloseOverlay'
       ],
       // Quasar plugins
       plugins: [
