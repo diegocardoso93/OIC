@@ -5,6 +5,8 @@ const router = new Router()
 const cors = require('@koa/cors');
 const mqtt = require('mqtt')
 
+const db = require('mongo');
+
 const dgn = require('./dragonboard-native')
 const IRcontrols = require('./ir-control-templates')
 
@@ -17,6 +19,10 @@ let calibrating = {
 
 // @todo read db 4 IRcontrols
 // --
+db.mgFind(db.oic, 'IRcontrols', {}, (data) => {
+console.log(data)
+})
+db.mgClient.close();
 
 const client  = mqtt.connect('mqtt://localhost')
 
