@@ -8,8 +8,8 @@ const mqtt = require('mqtt')
 const db = require('./mongo');
 
 const dgn = require('./dragonboard-native')
-const IRcontrols = require('./ir-control-templates')
-console.log(IRcontrols)
+let IRcontrols = require('./ir-control-templates')
+
 // Store key current button calibrating
 let calibrating = {
   control: '', // sample: tv
@@ -17,18 +17,15 @@ let calibrating = {
   active: false
 }
 
-// @todo read db 4 IRcontrols
-// --
 db.mgConnect((oic, mgClient) => {
-console.log(db)
-db.mgFind(oic, 'IRcontrols', {}, (data) => {
-console.log(data)
-if (data.length == 0) {
-  db.mgInsert(oic, 'IRcontrols', IRcontrols, (result) => {
-    console.log(result)
+
+  db.mgFind(oic, 'IRcontrols', {}, (data) => {
+    if (data.length == 0) { // First time
+      db.mgInsert(oic, 'IRcontrols', IRcontrols)
+    } else {
+      IRcontrols = data
+    }
   })
-}
-})
 
 
 const client  = mqtt.connect('mqtt://localhost')
@@ -52,6 +49,9 @@ client.on('message', (topic, message) => {
 
 router.get('/', (ctx, next) => {
   ctx.body = 'hello'
+})
+router.get('/meta/IRcontrols', (ctx, next) => {
+  ctx.body = IRcontrols
 })
 
 // Entering calibrate state

@@ -1,68 +1,67 @@
 
 let IRcontrols = [{
-
-        name: 'tv',
-        button: {
-            power    : '0x20DF10EF',
-            caption  : '',
-            help     : '',
-            search   : '',
-            home     : '',
-            n1       : '',
-            n2       : '',
-            n3       : '',
-            n4       : '',
-            n5       : '',
-            n6       : '',
-            n7       : '',
-            n8       : '',
-            n9       : '',
-            list     : '',
-            n0       : '',
-            flashbk  : '',
-            volp     : '',
-            chp      : '',
-            fav      : '',
-            info     : '',
-            mute     : '',
-            volm     : '',
-            chm      : '',
-            settings : '',
-            up       : '',
-            livezoom : '',
-            ok       : '',
-            right    : '',
-            back     : '',
-            down     : '',
-            exit     : '',
-            sap      : '',
-            sleep    : '',
-            stop     : '',
-            rewind   : '',
-            play     : '',
-            pause    : '',
-            forward  : '',
-            point1   : '',
-            point2   : '',
-            point3   : '',
-            point4   : ''
-        },
-        cfgKey: 'cfgTvControl' // mongodb cfgKey config name
+    name: 'tv',
+    button: {
+        power    : '0x20DF10EF',
+        caption  : '',
+        help     : '',
+        search   : '',
+        home     : '',
+        n1       : '',
+        n2       : '',
+        n3       : '',
+        n4       : '',
+        n5       : '',
+        n6       : '',
+        n7       : '',
+        n8       : '',
+        n9       : '',
+        list     : '',
+        n0       : '',
+        flashbk  : '',
+        volp     : '',
+        chp      : '',
+        fav      : '',
+        info     : '',
+        mute     : '',
+        volm     : '',
+        chm      : '',
+        settings : '',
+        up       : '',
+        livezoom : '',
+        ok       : '',
+        right    : '',
+        back     : '',
+        down     : '',
+        exit     : '',
+        sap      : '',
+        sleep    : '',
+        stop     : '',
+        rewind   : '',
+        play     : '',
+        pause    : '',
+        forward  : '',
+        point1   : '',
+        point2   : '',
+        point3   : '',
+        point4   : ''
     },
-
-    {   name: 'split',
-        button: {
-            power  : '',
-            mode   : '',
-            sleep  : '',
-            up     : '',
-            fan    : '',
-            timer  : '',
-            down   : '',
-            swing  : ''
-        },
-        cfgKey: 'cfgSplitControl'
+    cfgKey: 'cfgTvControl' // mongodb cfgKey config name
+},
+{
+    name: 'split',
+    button: {
+        power  : '',
+        mode   : '',
+        sleep  : '',
+        up     : '',
+        fan    : '',
+        timer  : '',
+        down   : '',
+        swing  : ''
     },
+    cfgKey: 'cfgSplitControl'
+},
 {
     name: 'light',
         button: {
@@ -91,6 +90,6 @@ let IRcontrols = [{
             c12             : ''
         },
         cfgKey: 'cfgLightControl'
-    }]
+}]
 
 module.exports = IRcontrols
