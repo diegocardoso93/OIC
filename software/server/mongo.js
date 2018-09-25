@@ -7,15 +7,20 @@ const dbName = 'oic'
 let oicDb
 let mgClient
 
-MongoClient.connect(url, { useNewUrlParser: true }, (err, client) => {
-  assert.equal(null, err)
-  console.log("Connected successfully to mongo server")
+const mgConnect = () => {
+  MongoClient.connect(url, { useNewUrlParser: true }, (err, client) => {
+    assert.equal(null, err)
+    console.log("Connected successfully to mongo server")
 
-  oicDb = client.db(dbName)
+    oicDb = client.db(dbName)
 
-  mgClient = client;
+    mgClient = client;
 
-})
+  })
+}
+const mgClose = () => {
+  mgClient.close();
+}
 
 const mgFind = function(db, collect, select, callback) {
   const collection = db.collection(collect)
@@ -61,5 +66,7 @@ module.exports = {
   mgFind: mgFind,
   mgInsert: mgInsert,
   mgUpdate: mgUpdate,
-  mgRemove: mgRemove
+  mgRemove: mgRemove,
+  mgConnect: mgConnect,
+  mgClose: mgClose
 }
