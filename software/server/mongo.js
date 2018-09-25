@@ -5,7 +5,7 @@ const url = 'mongodb://localhost:27017';
 
 const dbName = 'oic';
 
-MongoClient.connect(url, function(err, client) {
+MongoClient.connect(url, { useNewUrlParser: true }, function(err, client) {
   assert.equal(null, err);
   console.log("Connected successfully to server");
 
@@ -16,8 +16,8 @@ MongoClient.connect(url, function(err, client) {
 });
 
 
-const mgFind = function(db, select, callback) {
-  const collection = db.collection('documents');
+const mgFind = function(db, collect, select, callback) {
+  const collection = db.collection(collect);
   collection.find(select).toArray(function(err, docs) {
     assert.equal(err, null);
     console.log("Found the following records");
@@ -26,8 +26,8 @@ const mgFind = function(db, select, callback) {
   });
 }
 
-const mgInsert = function(db, collection, input, callback) {
-  const collection = db.collection(collection);
+const mgInsert = function(db, collect, input, callback) {
+  const collection = db.collection(collect);
   collection.insertMany(input, function(err, result) {
     assert.equal(err, null);
     console.log("Inserted "+input.length+" documents into the "+collection);
@@ -35,18 +35,18 @@ const mgInsert = function(db, collection, input, callback) {
   });
 }
 
-const mgUpdate = function(db, collection, where, set, callback) {
-  const collection = db.collection(collection);
+const mgUpdate = function(db, collect, where, set, callback) {
+  const collection = db.collection(collect);
   collection.updateOne(where
-    , { $set: set}, function(err, result) {
+    , { $set: set }, function(err, result) {
     assert.equal(err, null);
     console.log("Updated the "+collection+" with "+where);
     callback(result);
   });  
 }
 
-const mgRemove = function(db, collection, where, callback) {
-  const collection = db.collection(collection);
+const mgRemove = function(db, collect, where, callback) {
+  const collection = db.collection(collect);
   collection.deleteOne(where, function(err, result) {
     assert.equal(err, null);
     console.log("Removed the "+collection+" with "+where);
