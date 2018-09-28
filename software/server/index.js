@@ -36,15 +36,19 @@ client.on('connect', () => {
 })
 
 client.on('message', (topic, message) => {
-  console.log(message.toString())
+  console.log(topic, message.toString())
   if (topic == 'calibrate' && calibrating.active) {
-    // @todo read db
-    IRcontrols[calibrating.control]
-              [calibrating.button] = message.toString();
-    // @todo save db
+    let objSet = {}
+    objSet["button."+calibrating.button] = message.toString()
+    db.mgUpdate(oic, 'IRcontrols', {name:calibrating.control}, objSet, (res) => console.log(res))
     calibrating.active = false
+    db.mgFind(oic, 'IRcontrols', {}, (data) => {
+      IRcontrols = data
+    }
+  })
+
   }
-  client.end()
+  //client.end()
 })
 
 router.get('/', (ctx, next) => {

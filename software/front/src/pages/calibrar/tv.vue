@@ -95,9 +95,9 @@ export default {
             this.$axios.get('http://' + location.hostname + ':3000/feed/calibrate')
               .then((response) => {
                 console.log(response)
-                if (response.active == false) {
+                if (response.data.active == false) {
                   this.opened = false;
-                  btnCalibrando = '';
+                  this.btnCalibrando = '';
                 }
               })
               timecount += 1000;
