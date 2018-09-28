@@ -70,7 +70,22 @@ export default {
         .catch((e) => {
           console.log('error', e)
         })
+    },
+    getControlsConfig: function () {
+      this.$axios.get('http://' + location.hostname + ':3000/cfg/control/receptor-tv', {control: 'receptor-tv'})
+        .then((response) => {
+          this.btn = response.data.control.button
+        })
+        .catch((e) => {
+          console.log('error', e)
+        })
+    },
+    notMapped: function (btnLabel) {
+     return !(this.btn[btnLabel] && this.btn[btnLabel].length > 0)
     }
+  },
+  mounted: function () {
+    this.getControlsConfig()
   }
 }
 </script>
