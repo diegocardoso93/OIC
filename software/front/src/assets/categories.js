@@ -1,6 +1,6 @@
 export default [
   {
-    title: 'Calibrar',
+    title: 'Mapear',
     icon: 'build',
     hash: 'calibrar',
     features: [

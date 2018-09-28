@@ -64,32 +64,32 @@ let IRcontrols = [{
 },
 {
     name: 'light',
-        button: {
-            brighthness_70  : '',
-            brighthness_50  : '',
-            brighthness_0   : '',
-            brighthness_100 : '',
-            r               : '',
-            g               : '',
-            b               : '',
-            w               : '',
-            c1              : '',
-            c2              : '',
-            c3              : '',
-            flash           : '',
-            c4              : '',
-            c5              : '',
-            c6              : '',
-            strobe          : '',
-            c7              : '',
-            c8              : '',
-            c9              : '',
-            smooth          : '',
-            c10             : '',
-            c11             : '',
-            c12             : ''
-        },
-        cfgKey: 'cfgLightControl'
+    button: {
+        brighthness_70  : '',
+        brighthness_50  : '',
+        brighthness_0   : '',
+        brighthness_100 : '',
+        r               : '',
+        g               : '',
+        b               : '',
+        w               : '',
+        c1              : '',
+        c2              : '',
+        c3              : '',
+        flash           : '',
+        c4              : '',
+        c5              : '',
+        c6              : '',
+        strobe          : '',
+        c7              : '',
+        c8              : '',
+        c9              : '',
+        smooth          : '',
+        c10             : '',
+        c11             : '',
+        c12             : ''
+    },
+    cfgKey: 'cfgLightControl'
 }]
 
 module.exports = IRcontrols

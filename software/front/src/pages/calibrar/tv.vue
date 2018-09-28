@@ -1,6 +1,6 @@
 <template>
   <q-page id="tv">
-    <p style="color: white">Clique sobre o botão e aponte o controle remoto real para a Central, pressione e aguarde fechar a mensagem, ao final o botão estará calibrado. Repita o processo para cada um dos botões.</p>
+    <p class="info-text">Clique sobre o botão e aponte o controle remoto real para a Central, pressione e aguarde fechar a mensagem, ao final o botão estará calibrado. Repita o processo para cada um dos botões.</p>
     <q-btn round color="negative" size="2vh" icon="power_settings_new" class="power" v-on:click="buttonPressed('power')" />
     <button tabindex="0" type="button" v-on:click="buttonPressed('tv')" class="q-btn inline relative-position q-btn-item non-selectable power q-btn-round q-focusable q-hoverable bg-dark text-white" style="font-size: 2vh;float: right">
       <div class="q-btn-inner row col items-center justify-center">TV</div>
@@ -61,7 +61,7 @@
     <q-btn color="green" size="2vh" class="small-1" icon="fiber_manual_record" v-on:click="buttonPressed('point2')" />
     <q-btn color="yellow" size="2vh" class="small-1" icon="fiber_manual_record" v-on:click="buttonPressed('point3')" />
     <q-btn color="blue" size="2vh" class="small-1" icon="fiber_manual_record" v-on:click="buttonPressed('point4')" />
-  
+
     <q-modal v-model="opened" minimized content-css="padding: 20px">
       <p>Calibrando botão [{{btnCalibrando}}]... aguardando comando...</p>
       <q-btn
@@ -87,20 +87,20 @@ export default {
       this.$axios.get('http://' + location.hostname + ':3000/calibrate/tv/' + key)
         .then((response) => {
           console.log(response)
-          this.btnCalibrando = key;
-          this.opened = true;
-          let timebias = 30000, timecount = 0;
+          this.btnCalibrando = key
+          this.opened = true
+          let timebias = 30000, timecount = 0
           let feedInterval = setInterval(() => {
             if (!this.opened || timecount >= timebias) clearInterval(feedInterval)
             this.$axios.get('http://' + location.hostname + ':3000/feed/calibrate')
               .then((response) => {
                 console.log(response)
-                if (response.data.active == false) {
-                  this.opened = false;
-                  this.btnCalibrando = '';
+                if (response.data.active === false) {
+                  this.opened = false
+                  this.btnCalibrando = ''
                 }
               })
-              timecount += 1000;
+            timecount += 1000
           }, 1000)
         })
         .catch((e) => {
@@ -136,4 +136,7 @@ export default {
   margin 2% 2%
   width 20.8%
 
+.info-text
+  color white
+  text-align justify
 </style>

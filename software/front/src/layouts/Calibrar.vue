@@ -18,7 +18,7 @@
 
         <q-toolbar-title>
           OIC
-          <div slot="subtitle">Calibrar</div>
+          <div slot="subtitle">Mapear</div>
         </q-toolbar-title>
       </q-toolbar>
     </q-layout-header>
