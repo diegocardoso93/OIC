@@ -70,8 +70,8 @@ db.mgConnect((oic, mgClient) => {
   // Pooling/get control configs
   router.get('/cfg/control/:control', (ctx, next) => {
     return new Promise((resolve, reject) => {
-      db.mgFind(oic, 'IRcontrols', {control: ctx.params.control}, (data) => {
-        ctx.body = {status: 200, control: data}
+      db.mgFind(oic, 'IRcontrols', {name: ctx.params.control}, (data) => {
+        ctx.body = {status: 200, control: data[0]}
         resolve()
       })
     })
@@ -96,7 +96,9 @@ db.mgConnect((oic, mgClient) => {
   // @BUTTON PRESS ACTIONS
   //
   router.get('/tv/:button', (ctx, next) => {
-    client.publish('control/tv', ctx.params.button)
+    db.mgFind(oic, 'IRcontrols', {name: 'tv'}, (data) => {
+      client.publish('control/tv', data[0]['button'][ctx.params.button])
+    })
     ctx.body = {status: 200}
   })
 

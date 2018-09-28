@@ -83,15 +83,14 @@ export default {
     getControlsConfig: function () {
       this.$axios.get('http://' + location.hostname + ':3000/cfg/control/tv', {control: 'tv'})
         .then((response) => {
-          console.log(response)
-          this.btn = response.data.button
+          this.btn = response.data.control.button
         })
         .catch((e) => {
           console.log('error', e)
         })
     },
     notMapped: function (btnLabel) {
-      return !(this.btn[btnLabel] && this.btn[btnLabel].length > 0)
+     return !(this.btn[btnLabel] && this.btn[btnLabel].length > 0)
     }
   },
   mounted: function () {
