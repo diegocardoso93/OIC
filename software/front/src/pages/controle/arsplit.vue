@@ -5,17 +5,17 @@
         <h1 style="margin: 10px" v-text="temperatura"></h1>
       </div>
     </div>
-    <q-btn round color="blue" size="3vh" icon="power_settings_new" class="power" v-on:click="buttonPressed('power')" />
-    <button tabindex="0" type="button" v-on:click="buttonPressed('mode')" class="q-btn inline relative-position q-btn-item non-selectable power q-btn-round q-focusable q-hoverable bg-positive text-white" style="font-size: 3vh;float: right">
+    <q-btn :disabled="notMapped('power')" round color="blue" size="3vh" icon="power_settings_new" class="power" v-on:click="buttonPressed('power')" />
+    <button :disabled="notMapped('mode')" tabindex="0" type="button" v-on:click="buttonPressed('mode')" class="q-btn inline relative-position q-btn-item non-selectable power q-btn-round q-focusable q-hoverable bg-positive text-white" style="font-size: 3vh;float: right">
       <div class="q-btn-inner row col items-center justify-center">mode</div>
     </button>
     <br/>
-    <q-btn color="light" size="3vh" label="sleep" class="number" v-on:click="buttonPressed('sleep')" />
-    <q-btn color="light" size="3vh" icon="arrow_drop_up" class="number" v-on:click="buttonPressed('up')" />
-    <q-btn color="light" size="3vh" label="fan" class="number" v-on:click="buttonPressed('fan')" />
-    <q-btn color="light" size="3vh" label="timer" class="number" v-on:click="buttonPressed('timer')" />
-    <q-btn color="light" size="3vh" icon="arrow_drop_down" class="number" v-on:click="buttonPressed('down')" />
-    <q-btn color="light" size="3vh" label="swing" class="number" v-on:click="buttonPressed('swing')" />
+    <q-btn :disabled="notMapped('sleep')" color="light" size="3vh" label="sleep" class="number" v-on:click="buttonPressed('sleep')" />
+    <q-btn :disabled="notMapped('up')" color="light" size="3vh" icon="arrow_drop_up" class="number" v-on:click="buttonPressed('up')" />
+    <q-btn :disabled="notMapped('fan')" color="light" size="3vh" label="fan" class="number" v-on:click="buttonPressed('fan')" />
+    <q-btn :disabled="notMapped('timer')" color="light" size="3vh" label="timer" class="number" v-on:click="buttonPressed('timer')" />
+    <q-btn :disabled="notMapped('down')" color="light" size="3vh" icon="arrow_drop_down" class="number" v-on:click="buttonPressed('down')" />
+    <q-btn :disabled="notMapped('swing')" color="light" size="3vh" label="swing" class="number" v-on:click="buttonPressed('swing')" />
   </q-page>
 </template>
 
@@ -46,12 +46,26 @@ export default {
         .catch(() => {
           console.log('error on read temperature')
         })
+    },
+    getControlsConfig: function () {
+      this.$axios.get('http://' + location.hostname + ':3000/cfg/control/split', {control: 'split'})
+        .then((response) => {
+          console.log(response)
+          this.btn = response.data.button
+        })
+        .catch((e) => {
+          console.log('error', e)
+        })
+    },
+    notMapped: function (btnLabel) {
+      return !(this.btn[btnLabel] && this.btn[btnLabel].length > 0)
     }
   },
   mounted () {
     this.readTempControl = setInterval(() => {
       this.readTemperature()
     }, 5000)
+    this.getControlsConfig()
   },
   destroyed () {
     clearInterval(this.readTempControl)

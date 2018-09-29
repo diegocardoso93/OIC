@@ -88,7 +88,7 @@ void mqttCallback(char* topic, byte* message, unsigned int length) {
 
   if (String(topic).startsWith("control")) {
     // IRsender.necSend(0x20DF10EF); // temporary fixed LG power button
-    IRsender.necSend((int)strtol(message, 0, 16));
+    IRsender.necSend((int)strtol(messageTemp.c_str(), 0, 16));
   }
 }
 

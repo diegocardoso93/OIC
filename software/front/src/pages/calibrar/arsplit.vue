@@ -28,12 +28,27 @@ export default {
   },
   methods: {
     buttonPressed: function (key) {
-      this.$axios.get('http://' + location.hostname + ':3000/split/' + key, {button: key})
+      this.$axios.get('http://' + location.hostname + ':3000/calibrate/split/' + key)
         .then((response) => {
           console.log(response)
+          this.btnCalibrando = key
+          this.opened = true
+          let timebias = 30000, timecount = 0
+          let feedInterval = setInterval(() => {
+            if (!this.opened || timecount >= timebias) clearInterval(feedInterval)
+            this.$axios.get('http://' + location.hostname + ':3000/feed/calibrate')
+              .then((response) => {
+                console.log(response)
+                if (response.data.active === false) {
+                  this.opened = false
+                  this.btnCalibrando = ''
+                }
+              })
+            timecount += 1000
+          }, 1000)
         })
-        .catch(() => {
-          alert('error')
+        .catch((e) => {
+          console.log('error', e)
         })
     },
     readTemperature: function () {

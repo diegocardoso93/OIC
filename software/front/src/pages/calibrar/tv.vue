@@ -26,7 +26,7 @@
 
     <div style="width:33%;float:left">
       <q-btn color="blue-grey" size="3vh" label="Vol" icon-right="add" class="lg-in" v-on:click="buttonPressed('volp')" />
-      <q-btn color="blue-grey" size="3vh" label="Ch" icon-right="add" class="lg-in" v-on:click="buttonPressed('chp')" />
+      <q-btn color="blue-grey" size="3vh" label="Vol" icon-right="remove" class="lg-in" v-on:click="buttonPressed('volm')" />
     </div>
     <div style="width:33%;float:left">
       <q-btn color="dark" size="2vh" label="fav" class="sm-in" v-on:click="buttonPressed('fav')" />
@@ -34,7 +34,7 @@
       <q-btn color="dark" size="2vh" label="mute" class="sm-in" v-on:click="buttonPressed('mute')" />
     </div>
     <div style="width:33%;float:left">
-      <q-btn color="blue-grey" size="3vh" label="Vol" icon-right="remove" class="lg-in" v-on:click="buttonPressed('volm')" />
+      <q-btn color="blue-grey" size="3vh" label="Ch" icon-right="add" class="lg-in" v-on:click="buttonPressed('chp')" />
       <q-btn color="blue-grey" size="3vh" label="Ch" icon-right="remove" class="lg-in" v-on:click="buttonPressed('chm')"/>
     </div>
 
