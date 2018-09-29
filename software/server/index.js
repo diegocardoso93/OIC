@@ -103,17 +103,23 @@ db.mgConnect((oic, mgClient) => {
   })
 
   router.get('/split/:button', (ctx, next) => {
-    client.publish('control/split', ctx.params.button)
+    db.mgFind(oic, 'IRcontrols', {name: 'split'}, (data) => {
+      client.publish('control/split', data[0]['button'][ctx.params.button])
+    })
     ctx.body = {status: 200}
   })
 
   router.get('/iluminacao/:button', (ctx, next) => {
-    client.publish('control/iluminacao', ctx.params.button)
+    db.mgFind(oic, 'IRcontrols', {name: 'light'}, (data) => {
+      client.publish('control/light', data[0]['button'][ctx.params.button])
+    })
     ctx.body = {status: 200}
   })
 
   router.get('/receptor-tv/:button', (ctx, next) => {
-    client.publish('control/receptor-tv', ctx.params.button)
+    db.mgFind(oic, 'IRcontrols', {name: 'receptor-tv'}, (data) => {
+      client.publish('control/receptor-tv', data[0]['button'][ctx.params.button])
+    })
     ctx.body = {status: 200}
   })
   // -------

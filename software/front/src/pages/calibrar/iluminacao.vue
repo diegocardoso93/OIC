@@ -80,11 +80,13 @@
 export default {
   data () {
     return {
+      btnCalibrando: '',
+      opened: false
     }
   },
   methods: {
     buttonPressed: function (key) {
-      this.$axios.get('http://' + location.hostname + ':3000/calibrate/iluminacao/' + key)
+      this.$axios.get('http://' + location.hostname + ':3000/calibrate/light/' + key)
         .then((response) => {
           console.log(response)
           this.btnCalibrando = key
