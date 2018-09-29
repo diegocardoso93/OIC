@@ -1,35 +1,26 @@
 <template>
   <q-page id="estatisticas">
     <div class="layout-view">
-      <example-chart :data="data"></example-chart>
+      <summary-pie-chart></summary-pie-chart>
     </div>
   </q-page>
 </template>
 
 <script>
-import exampleChart from './exampleChart'
+import SummaryPieChart from './summaryPieChart'
+
 export default {
   components: {
-    exampleChart
+    SummaryPieChart
   },
-  data () {
-    return {
-      data: {
-        labels: ['A', 'B', 'C'],
-        datasets: [{
-          label: ['One', 'Two', 'Three'],
-          backgroundColor: ['#f80', '#800', '#888'],
-          data: [10, 20, 30]
-        }],
-        option: {
-          heigth: 200
-        }
-      }
-    }
-  },
-  methods: {
-  },
-  mounted: function () {
+  mounted () {
+    this.$axios.get('http://' + location.hostname + ':3000/stats/control-use')
+      .then((response) => {
+        console.log(response)
+      })
+      .catch((e) => {
+        console.log('error', e)
+      })
   }
 }
 </script>
