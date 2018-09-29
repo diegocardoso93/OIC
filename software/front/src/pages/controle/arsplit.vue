@@ -23,7 +23,8 @@
 export default {
   data () {
     return {
-      temperatura: ''
+      temperatura: '',
+      btn: {}
     }
   },
   methods: {
@@ -40,7 +41,7 @@ export default {
       this.$axios.get('http://' + location.hostname + ':3000/read/temperatura')
         .then((response) => {
           if (response.status === 200) {
-            this.data.temperatura = response.temperatura + '°C'
+            this.temperatura = response.data.temperatura + '°C'
           }
         })
         .catch(() => {
@@ -51,7 +52,7 @@ export default {
       this.$axios.get('http://' + location.hostname + ':3000/cfg/control/split', {control: 'split'})
         .then((response) => {
           console.log(response)
-          this.btn = response.data.button
+          this.btn = response.data.control.button
         })
         .catch((e) => {
           console.log('error', e)

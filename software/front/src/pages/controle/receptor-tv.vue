@@ -59,6 +59,7 @@
 export default {
   data () {
     return {
+      btn: {}
     }
   },
   methods: {
@@ -81,7 +82,7 @@ export default {
         })
     },
     notMapped: function (btnLabel) {
-     return !(this.btn[btnLabel] && this.btn[btnLabel].length > 0)
+      return !(this.btn[btnLabel] && this.btn[btnLabel].length > 0)
     }
   },
   mounted: function () {

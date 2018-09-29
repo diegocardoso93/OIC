@@ -70,6 +70,7 @@
 export default {
   data () {
     return {
+      btn: {}
     }
   },
   methods: {
@@ -83,10 +84,10 @@ export default {
         })
     },
     getControlsConfig: function () {
-      this.$axios.get('http://' + location.hostname + ':3000/cfg/control/iluminacao', {control: 'iluminacao'})
+      this.$axios.get('http://' + location.hostname + ':3000/cfg/control/light', {control: 'light'})
         .then((response) => {
           console.log(response)
-          this.btn = response.data.button
+          this.btn = response.data.control.button
         })
         .catch((e) => {
           console.log('error', e)
