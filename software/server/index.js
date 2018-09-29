@@ -163,6 +163,20 @@ db.mgConnect((oic, mgClient) => {
     })
   })
 
+  router.get('/stats/control-button', (ctx, next) => {
+       return new Promise((resolve, reject) => {
+      db.mgAggregate(oic, 'IRlogs',
+        [{ $group: { _id: {control: "$control", button: "$button"}, count: {$sum:1} }},
+         {$group: { _id: {control: "$_id.control"},
+           buttons: {$push: {button:"$_id.button", count:"$count"}}}
+        }], (res) => {
+        ctx.body = {status: 200, graph: res}
+        resolve()
+      })
+    })
+  })
+
+
   app
     .use(cors({origin: (ctx) => { return '*' }}))
     .use(router.routes())
