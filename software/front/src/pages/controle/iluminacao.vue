@@ -75,7 +75,7 @@ export default {
   },
   methods: {
     buttonPressed: function (key) {
-      this.$axios.get('http://' + location.hostname + ':3000/iluminacao/' + key, {button: key})
+      this.$axios.get('http://' + location.hostname + ':3000/light/' + key, {button: key})
         .then((response) => {
           console.log(response)
         })
