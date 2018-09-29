@@ -11,7 +11,9 @@
     "test": "echo \"No test specified\" && exit 0"
   },
   "dependencies": {
-    "axios": "^0.18.0"
+    "axios": "^0.18.0",
+    "chart.js": "^2.7.2",
+    "vue-chartjs": "^3.4.0"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.1",

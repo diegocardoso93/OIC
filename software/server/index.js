@@ -98,11 +98,11 @@ db.mgConnect((oic, mgClient) => {
   router.get('/tv/:button', (ctx, next) => {
     db.mgFind(oic, 'IRcontrols', {name: 'tv'}, (data) => {
       client.publish('control/tv', data[0]['button'][ctx.params.button])
-      db.mgInsert(oic, 'IRlogs', {
+      db.mgInsert(oic, 'IRlogs', [{
         control: 'tv',
         button: ctx.params.button,
-        timestamp: new Date().toISOString
-      })
+        date: new Date()
+      }])
     })
     ctx.body = {status: 200}
   })
@@ -110,11 +110,11 @@ db.mgConnect((oic, mgClient) => {
   router.get('/split/:button', (ctx, next) => {
     db.mgFind(oic, 'IRcontrols', {name: 'split'}, (data) => {
       client.publish('control/split', data[0]['button'][ctx.params.button])
-      db.mgInsert(oic, 'IRlogs', {
+      db.mgInsert(oic, 'IRlogs', [{
         control: 'split',
         button: ctx.params.button,
-        timestamp: new Date().toISOString
-      })
+        date: new Date()
+      }])
     })
     ctx.body = {status: 200}
   })
@@ -122,11 +122,11 @@ db.mgConnect((oic, mgClient) => {
   router.get('/light/:button', (ctx, next) => {
     db.mgFind(oic, 'IRcontrols', {name: 'light'}, (data) => {
       client.publish('control/light', data[0]['button'][ctx.params.button])
-      db.mgInsert(oic, 'IRlogs', {
+      db.mgInsert(oic, 'IRlogs', [{
         control: 'light',
         button: ctx.params.button,
-        timestamp: new Date().toISOString
-      })
+        date: new Date()
+      }])
     })
     ctx.body = {status: 200}
   })
@@ -134,11 +134,11 @@ db.mgConnect((oic, mgClient) => {
   router.get('/receptor-tv/:button', (ctx, next) => {
     db.mgFind(oic, 'IRcontrols', {name: 'receptor-tv'}, (data) => {
       client.publish('control/receptor-tv', data[0]['button'][ctx.params.button])
-      db.mgInsert(oic, 'IRlogs', {
+      db.mgInsert(oic, 'IRlogs', [{
         control: 'receptor-tv',
         button: ctx.params.button,
-        timestamp: new Date().toISOString
-      })
+        date: new Date()
+      }])
     })
     ctx.body = {status: 200}
   })

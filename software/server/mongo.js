@@ -31,7 +31,7 @@ const mgInsert = function(db, collect, input, callback) {
   collection.insertMany(input, function(err, result) {
     assert.equal(err, null)
     console.log("Inserted "+input.length+" documents into the "+collection)
-    callback(result)
+    if (callback) callback(result)
   })
 }
 
