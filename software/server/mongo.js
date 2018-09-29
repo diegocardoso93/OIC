@@ -16,7 +16,7 @@ const mgConnect = (cb) => {
   })
 }
 
-const mgFind = function(db, collect, select, callback) {
+const mgFind = (db, collect, select, callback) => {
   const collection = db.collection(collect)
   collection.find(select).toArray(function(err, docs) {
     assert.equal(err, null)
@@ -26,7 +26,7 @@ const mgFind = function(db, collect, select, callback) {
   })
 }
 
-const mgInsert = function(db, collect, input, callback) {
+const mgInsert = (db, collect, input, callback) => {
   const collection = db.collection(collect)
   collection.insertMany(input, function(err, result) {
     assert.equal(err, null)
@@ -35,7 +35,7 @@ const mgInsert = function(db, collect, input, callback) {
   })
 }
 
-const mgUpdate = function(db, collect, where, set, callback) {
+const mgUpdate = (db, collect, where, set, callback) => {
   const collection = db.collection(collect)
   collection.updateOne(where
     , { $set: set }, function(err, result) {
@@ -45,7 +45,7 @@ const mgUpdate = function(db, collect, where, set, callback) {
   })  
 }
 
-const mgRemove = function(db, collect, where, callback) {
+const mgRemove = (db, collect, where, callback) => {
   const collection = db.collection(collect)
   collection.deleteOne(where, function(err, result) {
     assert.equal(err, null)
@@ -54,10 +54,20 @@ const mgRemove = function(db, collect, where, callback) {
   })    
 }
 
+const mgAggregate = (db, collect, pipes) => {
+  const collection = db.collection(collect)
+  collection.aggregate(pipes)
+    .toArray((err, result) => {
+      assert.equal(null, err);
+      callback(result)
+    })
+}
+
 module.exports = {
   mgFind: mgFind,
   mgInsert: mgInsert,
   mgUpdate: mgUpdate,
   mgRemove: mgRemove,
+  mgAggregate: mgAggregate,
   mgConnect: mgConnect
 }
