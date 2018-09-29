@@ -149,18 +149,18 @@ db.mgConnect((oic, mgClient) => {
   // @LOG entries
   //
   router.get('/stats/control-use', (ctx, next) => {
-    // ctx.params.control,
-    // ctx.params.button,
-    db.mgAggregate('IRlogs',
+       return new Promise((resolve, reject) => {
+      db.mgAggregate(oic, 'IRlogs',
       [{
         $group: {
           _id: "$control",
           count: { $sum: 1 }
         }
       }], (res) => {
-        console.log(res)
+        ctx.body = {status: 200, graph: res}
+        resolve()
       })
-    ctx.body = {status: 200}
+    })
   })
 
   app
@@ -171,3 +171,4 @@ db.mgConnect((oic, mgClient) => {
 
 
 });
+

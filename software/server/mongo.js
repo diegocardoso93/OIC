@@ -54,7 +54,7 @@ const mgRemove = (db, collect, where, callback) => {
   })    
 }
 
-const mgAggregate = (db, collect, pipes) => {
+const mgAggregate = (db, collect, pipes, callback) => {
   const collection = db.collection(collect)
   collection.aggregate(pipes)
     .toArray((err, result) => {
