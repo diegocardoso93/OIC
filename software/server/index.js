@@ -20,7 +20,7 @@ let calibrating = {
 db.mgConnect((oic, mgClient) => {
   db.mgFind(oic, 'IRcontrols', {}, (data) => {
     if (data.length == 0) { // First time
-      db.mgInsert(oic, 'IRcontrols', IRcontrols)
+      db.mgInsert(oic, 'IRcontrols', IRcontrols, () => {})
     } else {
       IRcontrols = data
     }
