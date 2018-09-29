@@ -41,6 +41,16 @@ const oicCalibrar = {
   children: []
 }
 
+const oicEstatisticas = {
+  path: '/home',
+  component: () => import('layouts/Estatisticas'),
+  children: [{
+    path: 'estatisticas',
+    meta: {},
+    component: () => import('pages/estatisticas/index')
+  }]
+}
+
 categories.forEach(category => {
   if (category.extract) {
     return
@@ -58,6 +68,7 @@ if (process.env.MODE !== 'ssr') {
   routes.push(oicRouter)
   routes.push(oicControle)
   routes.push(oicCalibrar)
+  routes.push(oicEstatisticas)
   routes.push({
     path: '/',
     redirect: '/home'

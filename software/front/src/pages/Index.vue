@@ -46,12 +46,16 @@ export default {
   },
   methods: {
     show (link) {
-      if (link.features) {
+      if (link.features && link.features.length) {
         this.category = link.features
         this.hash = link.hash
         return
       }
-      this.$router.push(`/home/${this.hash}/${link.hash}`)
+      if (this.hash) {
+        this.$router.push(`/home/${this.hash}/${link.hash}`)
+      } else {
+        this.$router.push(`/home/${link.hash}`)
+      }
     }
   }
 }
