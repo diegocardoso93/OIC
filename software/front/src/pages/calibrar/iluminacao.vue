@@ -63,6 +63,16 @@
         <div class="q-btn-inner row col items-center justify-center button-text">smooth</div>
       </button>
     </div>
+
+    <q-modal v-model="opened" minimized content-css="padding: 20px">
+      <p>Calibrando botão [{{btnCalibrando}}]... aguardando comando...</p>
+      <q-btn
+        color="primary"
+        @click="opened = false"
+        label="Sair"
+      />
+    </q-modal>
+
   </q-page>
 </template>
 

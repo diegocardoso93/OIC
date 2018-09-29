@@ -52,6 +52,16 @@
     <q-btn color="dark" size="2vh" label="mute" class="number" v-on:click="buttonPressed('mute')" />
     <q-btn color="dark" size="2vh" label="0" class="number" v-on:click="buttonPressed('0')" />
     <q-btn color="dark" size="2vh" label="close" class="number" v-on:click="buttonPressed('close')" />
+
+    <q-modal v-model="opened" minimized content-css="padding: 20px">
+      <p>Calibrando botão [{{btnCalibrando}}]... aguardando comando...</p>
+      <q-btn
+        color="primary"
+        @click="opened = false"
+        label="Sair"
+      />
+    </q-modal>
+
   </q-page>
 </template>
 
