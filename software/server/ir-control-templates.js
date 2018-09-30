@@ -90,6 +90,43 @@ let IRcontrols = [{
         c12             : ''
     },
     cfgKey: 'cfgLightControl'
+},
+{
+    name: 'receptor-tv',
+    button: {
+        power    : '',
+        power_tv : '',
+        set_tv   : '',
+        tv_in    : '',
+        volm_tv  : '',
+        volp_tv  : '',
+        setup    : '',
+        app      : '',
+        volm     : '',
+        volp     : '',
+        home     : '',
+        up       : '',
+        repeate  : '',
+        left     : '',
+        ok       : '',
+        right    : '',
+        keyboard : '',
+        down     : '',
+        mouse    : '',
+        n1       : '',
+        n2       : '',
+        n3       : '',
+        n4       : '',
+        n5       : '',
+        n6       : '',
+        n7       : '',
+        n8       : '',
+        n9       : '',
+        mute     : '',
+        n0       : '',
+        close    : ''
+    },
+    cfgKey: 'cfgReceptorTvControl'
 }]
 
 module.exports = IRcontrols

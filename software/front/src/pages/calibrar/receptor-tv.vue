@@ -1,5 +1,5 @@
 <template>
-  <q-page id="tv">
+  <q-page id="receptor-tv">
     <q-btn round color="negative" size="2vh" icon="power_settings_new" class="power" v-on:click="buttonPressed('power')" />
     <q-btn round color="dark" size="2vh" icon="power_settings_new" class="power" style="float: right" v-on:click="buttonPressed('power_tv')" />
     <br/>
@@ -10,10 +10,10 @@
     <button tabindex="0" type="button" v-on:click="buttonPressed('tv_in')" class="q-btn inline relative-position q-btn-item non-selectable small-1 q-btn-rectangle q-focusable q-hoverable bg-dark text-white" style="font-size: 2vh;">
       <div class="q-btn-inner row col items-center justify-center">TV IN</div>
     </button>
-    <button tabindex="0" type="button" v-on:click="buttonPressed('vol-_tv')" class="q-btn inline relative-position q-btn-item non-selectable small-1 q-btn-rectangle q-focusable q-hoverable bg-dark text-white" style="font-size: 2vh;">
+    <button tabindex="0" type="button" v-on:click="buttonPressed('volm_tv')" class="q-btn inline relative-position q-btn-item non-selectable small-1 q-btn-rectangle q-focusable q-hoverable bg-dark text-white" style="font-size: 2vh;">
       <div class="q-btn-inner row col items-center justify-center">VOL-</div>
     </button>
-    <button tabindex="0" type="button" v-on:click="buttonPressed('vol+_tv')" class="q-btn inline relative-position q-btn-item non-selectable small-1 q-btn-rectangle q-focusable q-hoverable bg-dark text-white" style="font-size: 2vh;">
+    <button tabindex="0" type="button" v-on:click="buttonPressed('volp_tv')" class="q-btn inline relative-position q-btn-item non-selectable small-1 q-btn-rectangle q-focusable q-hoverable bg-dark text-white" style="font-size: 2vh;">
       <div class="q-btn-inner row col items-center justify-center">VOL+</div>
     </button>
 
@@ -23,10 +23,10 @@
     <button tabindex="0" type="button" v-on:click="buttonPressed('app')" class="q-btn inline relative-position q-btn-item non-selectable small-1 q-btn-rectangle q-focusable q-hoverable bg-green text-white" style="font-size: 2vh;">
       <div class="q-btn-inner row col items-center justify-center">APP</div>
     </button>
-    <button tabindex="0" type="button" v-on:click="buttonPressed('vol-')" class="q-btn inline relative-position q-btn-item non-selectable small-1 q-btn-rectangle q-focusable q-hoverable bg-yellow text-white" style="font-size: 2vh;">
+    <button tabindex="0" type="button" v-on:click="buttonPressed('volm')" class="q-btn inline relative-position q-btn-item non-selectable small-1 q-btn-rectangle q-focusable q-hoverable bg-yellow text-white" style="font-size: 2vh;">
       <div class="q-btn-inner row col items-center justify-center">VOL-</div>
     </button>
-    <button tabindex="0" type="button" v-on:click="buttonPressed('vol+')" class="q-btn inline relative-position q-btn-item non-selectable small-1 q-btn-rectangle q-focusable q-hoverable bg-blue text-white" style="font-size: 2vh;">
+    <button tabindex="0" type="button" v-on:click="buttonPressed('volp')" class="q-btn inline relative-position q-btn-item non-selectable small-1 q-btn-rectangle q-focusable q-hoverable bg-blue text-white" style="font-size: 2vh;">
       <div class="q-btn-inner row col items-center justify-center">VOL+</div>
     </button>
 
@@ -40,17 +40,17 @@
     <q-btn color="blue-grey" size="3vh" icon="arrow_drop_down" class="number" v-on:click="buttonPressed('down')" />
     <q-btn round color="dark" size="2vh" icon="mouse" v-on:click="buttonPressed('mouse')" style="margin: 11%;"/>
 
-    <q-btn color="dark" size="2vh" label="1" class="number" v-on:click="buttonPressed('1')" />
-    <q-btn color="dark" size="2vh" label="2" class="number" v-on:click="buttonPressed('2')" />
-    <q-btn color="dark" size="2vh" label="3" class="number" v-on:click="buttonPressed('3')" />
-    <q-btn color="dark" size="2vh" label="4" class="number" v-on:click="buttonPressed('4')" />
-    <q-btn color="dark" size="2vh" label="5" class="number" v-on:click="buttonPressed('5')" />
-    <q-btn color="dark" size="2vh" label="6" class="number" v-on:click="buttonPressed('6')" />
-    <q-btn color="dark" size="2vh" label="7" class="number" v-on:click="buttonPressed('7')" />
-    <q-btn color="dark" size="2vh" label="8" class="number" v-on:click="buttonPressed('8')" />
-    <q-btn color="dark" size="2vh" label="9" class="number" v-on:click="buttonPressed('9')" />
+    <q-btn color="dark" size="2vh" label="1" class="number" v-on:click="buttonPressed('n1')" />
+    <q-btn color="dark" size="2vh" label="2" class="number" v-on:click="buttonPressed('n2')" />
+    <q-btn color="dark" size="2vh" label="3" class="number" v-on:click="buttonPressed('n3')" />
+    <q-btn color="dark" size="2vh" label="4" class="number" v-on:click="buttonPressed('n4')" />
+    <q-btn color="dark" size="2vh" label="5" class="number" v-on:click="buttonPressed('n5')" />
+    <q-btn color="dark" size="2vh" label="6" class="number" v-on:click="buttonPressed('n6')" />
+    <q-btn color="dark" size="2vh" label="7" class="number" v-on:click="buttonPressed('n7')" />
+    <q-btn color="dark" size="2vh" label="8" class="number" v-on:click="buttonPressed('n8')" />
+    <q-btn color="dark" size="2vh" label="9" class="number" v-on:click="buttonPressed('n9')" />
     <q-btn color="dark" size="2vh" label="mute" class="number" v-on:click="buttonPressed('mute')" />
-    <q-btn color="dark" size="2vh" label="0" class="number" v-on:click="buttonPressed('0')" />
+    <q-btn color="dark" size="2vh" label="0" class="number" v-on:click="buttonPressed('n0')" />
     <q-btn color="dark" size="2vh" label="close" class="number" v-on:click="buttonPressed('close')" />
 
     <q-modal v-model="opened" minimized content-css="padding: 20px">
