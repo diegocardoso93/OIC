@@ -33,17 +33,13 @@
         inset-delimiter
       >
         <q-list-header>Menu</q-list-header>
-        <q-item @click.native="openURL('https://github.com/quasarframework/')">
+        <q-item @click.native="openURL('https://contest.embarcados.com.br/projetos/oic-omnidirecional-infrared-center')">
           <q-item-side icon="code" />
-          <q-item-main label="Sobre" sublabel="github.com/quasarframework" />
+          <q-item-main label="Sobre" sublabel="Embarcados Contest" />
         </q-item>
-        <q-item @click.native="openURL('http://quasar-framework.org')">
+        <q-item @click.native="openURL('https://github.com/diegocardoso93/OIC')">
           <q-item-side icon="school" />
-          <q-item-main label="Documentação" sublabel="quasar-framework.org" />
-        </q-item>
-        <q-item @click.native="openURL('https://discord.gg/5TDhbDg')">
-          <q-item-side icon="chat" />
-          <q-item-main label="Fale conosco" sublabel="https://discord.gg/5TDhbDg" />
+          <q-item-main label="Documentação" sublabel="OIC" />
         </q-item>
       </q-list>
     </q-layout-drawer>

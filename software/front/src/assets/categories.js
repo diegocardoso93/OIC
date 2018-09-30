@@ -23,11 +23,6 @@ export default [
         title: 'Receptor TV',
         icon: 'live_tv',
         hash: 'receptor-tv'
-      },
-      {
-        title: 'Home Theater',
-        icon: 'audiotrack',
-        hash: 'home-theater'
       }
     ]
   },
@@ -55,11 +50,6 @@ export default [
         title: 'Receptor TV',
         icon: 'live_tv',
         hash: 'receptor-tv'
-      },
-      {
-        title: 'Home Theater',
-        icon: 'audiotrack',
-        hash: 'home-theater'
       }
     ]
   },
