@@ -24,7 +24,14 @@ export default {
           xAxes: [{
             ticks: {
               beginAtZero: true
-            }
+            },
+            barPercentage: 0.1
+          }],
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            },
+            barPercentage: 0.1
           }]
         }
       })
