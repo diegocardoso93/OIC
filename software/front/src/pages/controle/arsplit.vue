@@ -63,6 +63,7 @@ export default {
     }
   },
   mounted () {
+    this.readTemperature()
     this.readTempControl = setInterval(() => {
       this.readTemperature()
     }, 5000)

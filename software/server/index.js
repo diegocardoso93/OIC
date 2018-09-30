@@ -35,15 +35,6 @@ db.mgConnect((oic, mgClient) => {
 
   client.on('message', (topic, message) => {
     console.log(topic, message.toString())
-    if (topic == 'calibrate' && calibrating.active) {
-      let objSet = {}
-      objSet["button."+calibrating.button] = message.toString()
-      db.mgUpdate(oic, 'IRcontrols', {name:calibrating.control}, objSet, (res) => console.log(res))
-      calibrating.active = false
-      db.mgFind(oic, 'IRcontrols', {}, (data) => {
-        IRcontrols = data
-      })
-    }
     //client.end()
   })
 
@@ -56,15 +47,28 @@ db.mgConnect((oic, mgClient) => {
 
   // Entering calibrate state
   router.get('/calibrate/:control/:button', (ctx, next) => {
-    calibrating = {
-      control: ctx.params.control,
-      button: ctx.params.button,
-      active: true
-    }
-    setTimeout(() => {
-      calibrating.active = false
-    }, 30000)
-    ctx.body = {status: 200}
+      calibrating = {
+        control: ctx.params.control,
+        button: ctx.params.button,
+        active: true
+      }
+      setTimeout(() => {
+        calibrating.active = false
+      }, 30000)
+
+    return new Promise((resolve, reject) => {
+      dgn.call('ir_receiver').then((message) => {
+        let objSet = {}
+        objSet["button."+calibrating.button] = message.toString()
+        db.mgUpdate(oic, 'IRcontrols', {name:calibrating.control}, objSet, (res) => {})
+        calibrating.active = false
+        db.mgFind(oic, 'IRcontrols', {}, (data) => {
+          IRcontrols = data
+        })
+        ctx.body = {status: 200}
+        resolve()
+      })
+    })
   })
 
   // Pooling/get control configs

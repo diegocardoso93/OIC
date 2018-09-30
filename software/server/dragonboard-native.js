@@ -7,6 +7,11 @@ class DragonBoardNative {
         name: 'temperature',
         path: '../../hardware/dragonboard/temperature/main',
         msg: null
+      },
+      ir_receiver: {
+        name: 'ir_receiver',
+        path: '../../hardware/dragonboard/ir/main',
+        msg: null
       }
     }
   }

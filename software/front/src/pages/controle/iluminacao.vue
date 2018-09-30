@@ -107,11 +107,12 @@ export default {
 .overlay
   background-color rgba(200, 200, 200, 0.5)
   border-radius 10px
+  text-align center
 
 .button-text
   font-size 12px
 
 .button-md-3
-  margin 2% 3.9%
-  width 17.2%
+  margin 2.4% 2.6%
+  max-width 19.4%
 </style>

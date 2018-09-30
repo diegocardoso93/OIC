@@ -75,26 +75,17 @@ export default {
   },
   methods: {
     buttonPressed: function (key) {
+      this.btnCalibrando = key
+      this.opened = true
       this.$axios.get('http://' + location.hostname + ':3000/calibrate/receptor-tv/' + key)
         .then((response) => {
           console.log(response)
-          this.btnCalibrando = key
-          this.opened = true
-          let timebias = 30000, timecount = 0
-          let feedInterval = setInterval(() => {
-            if (!this.opened || timecount >= timebias) clearInterval(feedInterval)
-            this.$axios.get('http://' + location.hostname + ':3000/feed/calibrate')
-              .then((response) => {
-                console.log(response)
-                if (response.data.active === false) {
-                  this.opened = false
-                  this.btnCalibrando = ''
-                }
-              })
-            timecount += 1000
-          }, 1000)
+          this.opened = false
+          this.btnCalibrando = ''
         })
         .catch((e) => {
+          this.opened = false
+          this.btnCalibrando = ''
           console.log('error', e)
         })
     }

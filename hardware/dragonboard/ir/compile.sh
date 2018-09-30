@@ -1,6 +1,6 @@
 
 
-g++ -pthread -lmraa -std=gnu++11 -lgpiodcxx \
+g++ -pthread -lmraa -std=gnu++11 \
 main.cpp \
 IRremote.h \
 IRremote.cpp \

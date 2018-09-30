@@ -86,26 +86,17 @@ export default {
   },
   methods: {
     buttonPressed: function (key) {
+      this.btnCalibrando = key
+      this.opened = true
       this.$axios.get('http://' + location.hostname + ':3000/calibrate/light/' + key)
         .then((response) => {
           console.log(response)
-          this.btnCalibrando = key
-          this.opened = true
-          let timebias = 30000, timecount = 0
-          let feedInterval = setInterval(() => {
-            if (!this.opened || timecount >= timebias) clearInterval(feedInterval)
-            this.$axios.get('http://' + location.hostname + ':3000/feed/calibrate')
-              .then((response) => {
-                console.log(response)
-                if (response.data.active === false) {
-                  this.opened = false
-                  this.btnCalibrando = ''
-                }
-              })
-            timecount += 1000
-          }, 1000)
+          this.opened = false
+          this.btnCalibrando = ''
         })
         .catch((e) => {
+          this.opened = false
+          this.btnCalibrando = ''
           console.log('error', e)
         })
     }
@@ -117,11 +108,12 @@ export default {
 .overlay
   background-color rgba(200, 200, 200, 0.5)
   border-radius 10px
+  text-align center
 
 .button-text
   font-size 12px
 
 .button-md-3
-  margin 2% 3.9%
-  width 17.2%
+  margin 2.4% 4.2%;
+  max-width 16.4%;
 </style>
