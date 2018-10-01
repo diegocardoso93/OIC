@@ -9,9 +9,14 @@ https://contest.embarcados.com.br/projetos/oic-omnidirecional-infrared-center/
 scripts folder
 
 ## running server
- ``cd software/server
-npm start``
+```bash
+cd software/server  
+npm start
+```
 
 ## running app (dev mode)
-```cd software/front
-quasar dev -m pwa```
+
+```bash
+cd software/front  
+quasar dev -m pwa
+```
