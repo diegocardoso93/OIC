@@ -51,12 +51,56 @@ export default {
         this.hash = link.hash
         return
       }
-      if (this.hash) {
+      if (link.hash === 'speech') {
+        this.speechStart()
+      } else if (this.hash) {
         this.$router.push(`/home/${this.hash}/${link.hash}`)
       } else {
         this.$router.push(`/home/${link.hash}`)
       }
+    },
+    speechStart () {
+      this.recognition.start()
+    },
+    speechInit () {
+      let SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+      let SpeechGrammarList = window.SpeechGrammarList || window.webkitSpeechGrammarList
+
+      let oicCommands = ['ligar TV', 'desligar TV']
+      let grammar = '#JSGF V1.0; grammar oicCommands; public <oicCommands> = ' + oicCommands.join(' | ') + ' ;'
+
+      this.recognition = new SpeechRecognition()
+      let speechRecognitionList = new SpeechGrammarList()
+      speechRecognitionList.addFromString(grammar, 1)
+      this.recognition.grammars = speechRecognitionList
+      // this.recognition.continuous = false
+      this.recognition.lang = 'pt-BR'
+      this.recognition.interimResults = false
+      this.recognition.maxAlternatives = 1
+
+      this.recognition.onresult = (event) => {
+        var last = event.results.length - 1
+        var command = event.results[last][0].transcript
+
+        console.log('Result received: ' + command)
+        console.log('Confidence: ' + event.results[0][0].confidence)
+      }
+
+      this.recognition.onspeechend = () => {
+        this.recognition.stop()
+      }
+
+      this.recognition.onnomatch = (event) => {
+        console.log('didnt recognise that command')
+      }
+
+      this.recognition.onerror = function (event) {
+        console.log('Error occurred in recognition: ' + event.error)
+      }
     }
+  },
+  mounted () {
+    this.speechInit()
   }
 }
 </script>

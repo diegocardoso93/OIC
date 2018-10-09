@@ -58,5 +58,11 @@ export default [
     icon: 'style',
     hash: 'estatisticas',
     features: []
+  },
+  {
+    title: 'Falar',
+    icon: 'mic',
+    hash: 'speech',
+    features: []
   }
 ]
