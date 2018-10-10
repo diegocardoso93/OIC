@@ -1,6 +1,6 @@
 export default {
-  'ligar TV': ['tv', 'power'],
-  'desligar TV': ['tv', 'power'],
+  'ligar tv': ['tv', 'power'],
+  'desligar tv': ['tv', 'power'],
   'aumentar som': ['tv', 'volp', 'volp', 'volp', 'volp', 'volp'],
   'diminuir som': ['tv', 'volm', 'volm', 'volm', 'volm', 'volm'],
   'mudar canal': ['tv', 'chp'],

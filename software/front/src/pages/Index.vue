@@ -15,7 +15,8 @@
           :key="category.hash"
           class="col-xs-6 col-sm-4 col-lg-3"
         >
-          <div class="card text-center category-link text-primary" @click="show(category)">
+          <div class="card text-center category-link text-primary" @click="show(category)"
+            :class="(category.hash === 'speech' && voiceActive) ? 'hoveron' : ''">
             <q-icon :name="category.icon" />
             <p class="caption">{{ category.title }}</p>
           </div>
@@ -37,7 +38,8 @@ import voicecommands from '../assets/voicecommands'
 export default {
   data () {
     return {
-      category: false
+      category: false,
+      voiceActive: false
     }
   },
   computed: {
@@ -61,6 +63,7 @@ export default {
       }
     },
     speechStart () {
+      this.voiceActive = true
       this.recognition.start()
     },
     speechInit () {
@@ -85,6 +88,7 @@ export default {
 
         console.log('Result received: ' + command)
         console.log('Confidence: ' + event.results[0][0].confidence)
+        command = command.toLowerCase()
         if (voicecommands[command]) {
           this.sendCommand(voicecommands[command])
         }
@@ -92,14 +96,17 @@ export default {
 
       this.recognition.onspeechend = () => {
         this.recognition.stop()
+        this.voiceActive = false
       }
 
       this.recognition.onnomatch = (event) => {
         console.log('didnt recognise that command')
+        this.voiceActive = false
       }
 
       this.recognition.onerror = function (event) {
         console.log('Error occurred in recognition: ' + event.error)
+        this.voiceActive = false
       }
     },
     sendCommand: function (commands) {
@@ -152,6 +159,6 @@ export default {
       opacity 0
       transition opacity .2s
       background currentColor
-    &:hover:before
+  .hoveron:before
       opacity .4
 </style>
