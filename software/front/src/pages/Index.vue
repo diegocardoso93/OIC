@@ -33,6 +33,7 @@
 
 <script>
 import categories from '../assets/categories'
+import voicecommands from '../assets/voicecommands'
 export default {
   data () {
     return {
@@ -66,7 +67,7 @@ export default {
       let SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
       let SpeechGrammarList = window.SpeechGrammarList || window.webkitSpeechGrammarList
 
-      let oicCommands = ['ligar TV', 'desligar TV']
+      let oicCommands = Object.keys(voicecommands)
       let grammar = '#JSGF V1.0; grammar oicCommands; public <oicCommands> = ' + oicCommands.join(' | ') + ' ;'
 
       this.recognition = new SpeechRecognition()
@@ -84,6 +85,9 @@ export default {
 
         console.log('Result received: ' + command)
         console.log('Confidence: ' + event.results[0][0].confidence)
+        if (voicecommands[command]) {
+          this.sendCommand(voicecommands[command])
+        }
       }
 
       this.recognition.onspeechend = () => {
@@ -97,6 +101,18 @@ export default {
       this.recognition.onerror = function (event) {
         console.log('Error occurred in recognition: ' + event.error)
       }
+    },
+    sendCommand: function (commands) {
+      commands.forEach((val, key) => {
+        if (key == 0) continue
+        this.$axios.get('http://' + location.hostname + ':3000/' + commands[0] + '/' + val, {button: val})
+          .then((response) => {
+            console.log(response)
+          })
+          .catch((e) => {
+            console.log('error', e)
+          })
+        })
     }
   },
   mounted () {
