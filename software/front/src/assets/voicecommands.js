@@ -3,6 +3,7 @@ export default {
   'desligar TV': ['tv', 'power'],
   'aumentar som': ['tv', 'volp', 'volp', 'volp', 'volp', 'volp'],
   'diminuir som': ['tv', 'volm', 'volm', 'volm', 'volm', 'volm'],
+  'mudar canal': ['tv', 'chp'],
   'avançar canal': ['tv', 'chp'],
   'voltar canal': ['tv', 'chm'],
 

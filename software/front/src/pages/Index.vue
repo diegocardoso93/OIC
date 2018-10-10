@@ -104,7 +104,7 @@ export default {
     },
     sendCommand: function (commands) {
       commands.forEach((val, key) => {
-        if (key == 0) continue
+        if (key === 0) return
         this.$axios.get('http://' + location.hostname + ':3000/' + commands[0] + '/' + val, {button: val})
           .then((response) => {
             console.log(response)
@@ -112,7 +112,7 @@ export default {
           .catch((e) => {
             console.log('error', e)
           })
-        })
+      })
     }
   },
   mounted () {
