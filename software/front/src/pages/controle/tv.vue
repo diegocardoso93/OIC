@@ -72,7 +72,7 @@ export default {
   },
   methods: {
     buttonPressed: function (key) {
-      this.$axios.get('http://' + location.hostname + ':3000/tv/' + key, {button: key})
+      this.$axios.get('https://' + location.hostname + ':3000/tv/' + key, {button: key})
         .then((response) => {
           console.log(response)
         })
@@ -81,7 +81,7 @@ export default {
         })
     },
     getControlsConfig: function () {
-      this.$axios.get('http://' + location.hostname + ':3000/cfg/control/tv', {control: 'tv'})
+      this.$axios.get('https://' + location.hostname + ':3000/cfg/control/tv', {control: 'tv'})
         .then((response) => {
           this.btn = response.data.control.button
         })

@@ -42,7 +42,7 @@ export default {
     buttonPressed: function (key) {
       this.btnCalibrando = key
       this.opened = true
-      this.$axios.get('http://' + location.hostname + ':3000/calibrate/split/' + key)
+      this.$axios.get('https://' + location.hostname + ':3000/calibrate/split/' + key)
         .then((response) => {
           console.log(response)
           this.opened = false
@@ -55,7 +55,7 @@ export default {
         })
     },
     readTemperature: function () {
-      this.$axios.get('http://' + location.hostname + ':3000/read/temperatura')
+      this.$axios.get('https://' + location.hostname + ':3000/read/temperatura')
         .then((response) => {
           if (response.status === 200) {
             this.temperatura = response.data.temperatura + '°C'

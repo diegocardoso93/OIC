@@ -75,7 +75,7 @@ export default {
   },
   methods: {
     buttonPressed: function (key) {
-      this.$axios.get('http://' + location.hostname + ':3000/light/' + key, {button: key})
+      this.$axios.get('https://' + location.hostname + ':3000/light/' + key, {button: key})
         .then((response) => {
           console.log(response)
         })
@@ -84,7 +84,7 @@ export default {
         })
     },
     getControlsConfig: function () {
-      this.$axios.get('http://' + location.hostname + ':3000/cfg/control/light', {control: 'light'})
+      this.$axios.get('https://' + location.hostname + ':3000/cfg/control/light', {control: 'light'})
         .then((response) => {
           console.log(response)
           this.btn = response.data.control.button

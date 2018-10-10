@@ -29,7 +29,7 @@ export default {
     }
   },
   mounted () {
-    this.$axios.get('http://' + location.hostname + ':3000/stats/control-use')
+    this.$axios.get('https://' + location.hostname + ':3000/stats/control-use')
       .then((response) => {
         console.log(response)
         this.summaryData = response.data.graph
@@ -37,7 +37,7 @@ export default {
       .catch((e) => {
         console.log('error', e)
       })
-    this.$axios.get('http://' + location.hostname + ':3000/stats/control-button')
+    this.$axios.get('https://' + location.hostname + ':3000/stats/control-button')
       .then((response) => {
         console.log(response)
         let x = response.data.graph
