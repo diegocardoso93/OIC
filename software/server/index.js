@@ -1,11 +1,13 @@
+const https = require('https')
+const fs = require('fs')
 const Koa = require('koa')
 const Router = require('koa-router')
 const app = new Koa()
 const router = new Router()
-const cors = require('@koa/cors');
+const cors = require('@koa/cors')
 const mqtt = require('mqtt')
 
-const db = require('./mongo');
+const db = require('./mongo')
 
 const dgn = require('./dragonboard-native')
 let IRcontrols = require('./ir-control-templates')
@@ -181,12 +183,21 @@ db.mgConnect((oic, mgClient) => {
   })
 
 
+const HOST = '0.0.0.0'
+const HTTPS_PORT = 3000
+const options = {
+    key: fs.readFileSync('./ssl/host.key', 'utf8'),
+    cert: fs.readFileSync('./ssl/host.cert', 'utf8')
+}
+
   app
     .use(cors({origin: (ctx) => { return '*' }}))
     .use(router.routes())
 
-  app.listen(3000, '0.0.0.0')
+const httpsServer = https.createServer(options, app.callback())
+  .listen(HTTPS_PORT, HOST)
+
+  //app.listen(3000, '0.0.0.0')
 
 
 });
-
