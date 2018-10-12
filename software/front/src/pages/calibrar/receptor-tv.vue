@@ -77,8 +77,7 @@ export default {
     buttonPressed: function (key) {
       this.btnCalibrando = key
       this.opened = true
-      this.$axios.get('https://' + location.hostname + ':3000/calibrate/receptor-tv/' + key,
-        { httpsAgent: new https.Agent({ rejectUnauthorized: false }) })
+      this.$axios.get('https://' + location.hostname + ':3000/calibrate/receptor-tv/' + key)
         .then((response) => {
           console.log(response)
           this.opened = false

@@ -64,8 +64,7 @@ export default {
   },
   methods: {
     buttonPressed: function (key) {
-      this.$axios.get('https://' + location.hostname + ':3000/receptor-tv/' + key,
-        { button: key, httpsAgent: new https.Agent({ rejectUnauthorized: false }) })
+      this.$axios.get('https://' + location.hostname + ':3000/receptor-tv/' + key, {button: key})
         .then((response) => {
           console.log(response)
         })
@@ -74,8 +73,7 @@ export default {
         })
     },
     getControlsConfig: function () {
-      this.$axios.get('https://' + location.hostname + ':3000/cfg/control/receptor-tv',
-        { control: 'receptor-tv', httpsAgent: new https.Agent({ rejectUnauthorized: false }) })
+      this.$axios.get('https://' + location.hostname + ':3000/cfg/control/receptor-tv', {control: 'receptor-tv'})
         .then((response) => {
           this.btn = response.data.control.button
         })

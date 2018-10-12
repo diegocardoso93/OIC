@@ -75,8 +75,7 @@ export default {
   },
   methods: {
     buttonPressed: function (key) {
-      this.$axios.get('https://' + location.hostname + ':3000/light/' + key,
-        { button: key, httpsAgent: new https.Agent({ rejectUnauthorized: false }) })
+      this.$axios.get('https://' + location.hostname + ':3000/light/' + key, {button: key})
         .then((response) => {
           console.log(response)
         })
@@ -85,8 +84,7 @@ export default {
         })
     },
     getControlsConfig: function () {
-      this.$axios.get('https://' + location.hostname + ':3000/cfg/control/light',
-        { control: 'light', httpsAgent: new https.Agent({ rejectUnauthorized: false }) })
+      this.$axios.get('https://' + location.hostname + ':3000/cfg/control/light', {control: 'light'})
         .then((response) => {
           console.log(response)
           this.btn = response.data.control.button

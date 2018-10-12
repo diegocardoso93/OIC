@@ -29,8 +29,7 @@ export default {
     }
   },
   mounted () {
-    this.$axios.get('https://' + location.hostname + ':3000/stats/control-use',
-      { httpsAgent: new https.Agent({ rejectUnauthorized: false }) })
+    this.$axios.get('https://' + location.hostname + ':3000/stats/control-use')
       .then((response) => {
         console.log(response)
         this.summaryData = response.data.graph
@@ -38,8 +37,7 @@ export default {
       .catch((e) => {
         console.log('error', e)
       })
-    this.$axios.get('https://' + location.hostname + ':3000/stats/control-button',
-      { httpsAgent: new https.Agent({ rejectUnauthorized: false }) })
+    this.$axios.get('https://' + location.hostname + ':3000/stats/control-button')
       .then((response) => {
         console.log(response)
         let x = response.data.graph
