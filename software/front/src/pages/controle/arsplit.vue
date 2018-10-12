@@ -29,8 +29,7 @@ export default {
   },
   methods: {
     buttonPressed: function (key) {
-      this.$axios.get('https://' + location.hostname + ':3000/split/' + key,
-        { button: key, httpsAgent: new https.Agent({ rejectUnauthorized: false }) })
+      this.$axios.get('https://' + location.hostname + ':3000/split/' + key, {button: key})
         .then((response) => {
           console.log(response)
         })
@@ -39,8 +38,7 @@ export default {
         })
     },
     readTemperature: function () {
-      this.$axios.get('https://' + location.hostname + ':3000/read/temperatura',
-        { httpsAgent: new https.Agent({ rejectUnauthorized: false }) })
+      this.$axios.get('https://' + location.hostname + ':3000/read/temperatura')
         .then((response) => {
           if (response.status === 200) {
             this.temperatura = response.data.temperatura + '°C'
@@ -51,8 +49,7 @@ export default {
         })
     },
     getControlsConfig: function () {
-      this.$axios.get('https://' + location.hostname + ':3000/cfg/control/split',
-        { control: 'split', httpsAgent: new https.Agent({ rejectUnauthorized: false }) })
+      this.$axios.get('https://' + location.hostname + ':3000/cfg/control/split', {control: 'split'})
         .then((response) => {
           console.log(response)
           this.btn = response.data.control.button
