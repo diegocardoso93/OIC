@@ -72,7 +72,8 @@ export default {
   },
   methods: {
     buttonPressed: function (key) {
-      this.$axios.get('https://' + location.hostname + ':3000/tv/' + key, {button: key})
+      this.$axios.get('https://' + location.hostname + ':3000/tv/' + key,
+        { button: key, httpsAgent: new https.Agent({ rejectUnauthorized: false }) })
         .then((response) => {
           console.log(response)
         })
@@ -81,7 +82,8 @@ export default {
         })
     },
     getControlsConfig: function () {
-      this.$axios.get('https://' + location.hostname + ':3000/cfg/control/tv', {control: 'tv'})
+      this.$axios.get('https://' + location.hostname + ':3000/cfg/control/tv',
+        { control: 'tv', httpsAgent: new https.Agent({ rejectUnauthorized: false }) })
         .then((response) => {
           this.btn = response.data.control.button
         })
