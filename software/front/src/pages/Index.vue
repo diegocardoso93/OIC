@@ -110,6 +110,7 @@ export default {
       }
     },
     sendCommand: function (commands) {
+      let count = 0
       commands.forEach((val, key) => {
         if (key === 0) return
         setTimeout(() => {
@@ -120,7 +121,7 @@ export default {
             .catch((e) => {
               console.log('error', e)
             })
-        }, 300)
+        }, 300 * ++count)
       })
     }
   },
