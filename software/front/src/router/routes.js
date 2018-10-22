@@ -51,6 +51,12 @@ const oicEstatisticas = {
   }]
 }
 
+const oicConfigurarVoz = {
+  path: '/home',
+  component: () => import('layouts/ConfigurarVoz'),
+  children: []
+}
+
 categories.forEach(category => {
   if (category.extract) {
     return
@@ -59,6 +65,7 @@ categories.forEach(category => {
     if (!feature.tabs) {
       oicControle.children.push(lazyLoad('controle/' + feature.hash, feature))
       oicCalibrar.children.push(lazyLoad('calibrar/' + feature.hash, feature))
+      oicConfigurarVoz.children.push(lazyLoad('configurar-voz/' + feature.hash, feature))
     }
   })
 })
@@ -68,6 +75,7 @@ if (process.env.MODE !== 'ssr') {
   routes.push(oicRouter)
   routes.push(oicControle)
   routes.push(oicCalibrar)
+  routes.push(oicConfigurarVoz)
   routes.push(oicEstatisticas)
   routes.push({
     path: '/',
