@@ -11,7 +11,6 @@ const db = require('./mongo')
 
 const dgn = require('./dragonboard-native')
 let IRcontrols = require('./ir-control-templates')
-let IRvoiceCommands = require('./ir-voice-commands-templates')
 
 // Store key current button calibrating
 let calibrating = {
@@ -107,6 +106,20 @@ db.mgConnect((oic, mgClient) => {
 
 
   router.get('/calibrar-voz/:control/:button/:command', (ctx, next) => {
+    let p = ctx.params
+    /*
+    IRvoiceCommands.forEach((vc, k) => {
+      if (vc[p.control]) {
+          vc[p.control].forEach((obj, key) => {
+          if (obj.label === p.button) {
+            IRvoiceCommands[k][p.control][key]['voice'] = p.command
+            db.mgRemove(oic, 'IRvoiceCommands', {}, () => {})
+            db.mgInsert(oic, 'IRvoiceCommands', IRvoiceCommands, () => {})
+          }
+        })
+      }
+    })
+    */
     console.log(ctx.params.control, ctx.params.button, ctx.params.command)
     ctx.body = {status: 200}
   })
