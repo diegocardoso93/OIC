@@ -81,7 +81,8 @@ export default {
     return {
       configurandoMsg: '',
       opened: false,
-      btn: {}
+      btn: {},
+      key: null
     }
   },
   mixins: [SpeechMixin],
@@ -89,35 +90,9 @@ export default {
     buttonPressed: function (key) {
       // step 1
       this.configurandoMsg = 'Configurando voz para botão [' + key + ']... aguardando voz...'
-      this.speechStart()
-
-      // step 2
-      /*
-      this.$axios.get('https://' + location.hostname + ':3000/tv/' + key, {button: key})
-        .then((response) => {
-          console.log(response)
-        })
-        .catch((e) => {
-          console.log('error', e)
-        })
-
-      this.btnCalibrando = key
       this.opened = true
-      this.$axios.get('https://' + location.hostname + ':3000/calibrate/tv/' + key)
-        .then((response) => {
-          console.log(response)
-          this.opened = false
-          this.btnCalibrando = ''
-        })
-        .catch((e) => {
-          this.opened = false
-          this.btnCalibrando = ''
-          console.log('error', e)
-        })
-        */
-    },
-    speechResult: function (command) {
-      console.log(command)
+      this.speechStart()
+      this.key = key
     },
     getControlsConfig: function () {
       this.$axios.get('https://' + location.hostname + ':3000/cfg/control/tv', {control: 'tv'})
@@ -130,10 +105,29 @@ export default {
     },
     notMapped: function (btnLabel) {
       return !(this.btn[btnLabel] && this.btn[btnLabel].length > 0)
+    },
+    speechResultCommand: function (command) {
+      console.log(command)
+      this.$axios.get('https://' + location.hostname + ':3000/calibrar-voz/tv/' + this.key + '/' + command, {})
+        .then((response) => {
+          console.log(response)
+          this.opened = false
+        })
+        .catch((e) => {
+          console.log('error', e)
+          this.opened = false
+        })
     }
   },
   mounted: function () {
     this.getControlsConfig()
+    this.$root.$on('speechResult', (command) => {
+      if (command === 'error') {
+        this.opened = false
+        return
+      }
+      this.speechResultCommand(command)
+    })
   }
 }
 </script>

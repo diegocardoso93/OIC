@@ -3,7 +3,8 @@ export default {
   data () {
     return {
       voiceActive: false,
-      recognition: null
+      recognition: null,
+      speechResult: null
     }
   },
   methods: {
@@ -33,22 +34,25 @@ export default {
 
         console.log('Result received: ' + command)
         console.log('Confidence: ' + event.results[0][0].confidence)
-        this.speechResult(command)
+        this.$root.$emit('speechResult', command)
       }
 
       this.recognition.onspeechend = () => {
         this.recognition.stop()
         this.voiceActive = false
+        this.$root.$emit('speechResult', 'error')
       }
 
       this.recognition.onnomatch = (event) => {
         console.log('didnt recognise that command')
         this.voiceActive = false
+        this.$root.$emit('speechResult', 'error')
       }
 
-      this.recognition.onerror = function (event) {
+      this.recognition.onerror = (event) => {
         console.log('Error occurred in recognition: ' + event.error)
         this.voiceActive = false
+        this.$root.$emit('speechResult', 'error')
       }
     }
   },

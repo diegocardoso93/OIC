@@ -40,8 +40,7 @@ import voicecommands from '../assets/voicecommands'
 export default {
   data () {
     return {
-      category: false,
-      voiceActive: false
+      category: false
     }
   },
   mixins: [SpeechMixin],
@@ -65,7 +64,7 @@ export default {
         this.$router.push(`/home/${link.hash}`)
       }
     },
-    speechResult: function (command) {
+    speechResultCommand: function (command) {
       command = command.toLowerCase()
       if (voicecommands[command]) {
         this.sendCommand(voicecommands[command])
@@ -86,6 +85,11 @@ export default {
         }, 300 * ++count)
       })
     }
+  },
+  mounted: function () {
+    this.$root.$on('speechResult', (command) => {
+      this.speechResultCommand(command)
+    })
   }
 }
 </script>

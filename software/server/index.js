@@ -61,7 +61,7 @@ db.mgConnect((oic, mgClient) => {
     return new Promise((resolve, reject) => {
       dgn.call('ir_receiver').then((message) => {
         let objSet = {}
-        objSet["button."+calibrating.button] = message.toString()
+        objSet['button.'+calibrating.button] = message.toString()
         db.mgUpdate(oic, 'IRcontrols', {name:calibrating.control}, objSet, (res) => {})
         calibrating.active = false
         db.mgFind(oic, 'IRcontrols', {}, (data) => {
@@ -97,6 +97,11 @@ db.mgConnect((oic, mgClient) => {
     })
   })
 
+
+  router.get('/calibrar-voz/:control/:button/:command', (ctx, next) => {
+    console.log(ctx.params.control, ctx.params.button, ctx.params.command)
+    ctx.body = {status: 200}
+  })
 
   // --------
   // @BUTTON PRESS ACTIONS
