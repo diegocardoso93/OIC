@@ -1,7 +1,7 @@
 # OIC
 OIC - Omnidirecional Infrared Center
 
-este projeto visa desenvolver uma solução centralizada para o acúmulo de diversos controles remotos de diferentes dispositivos baseados em comando infravermelho
+Este projeto visa desenvolver uma solução centralizada para o acúmulo de diversos controles remotos de diferentes dispositivos baseados em comando infravermelho
 
 <img src="https://contest.embarcados.com.br/wp-content/uploads/2018/08/Sem-t%C3%ADtulo-1.png" alt="" role="presentation">
 https://contest.embarcados.com.br/projetos/oic-omnidirecional-infrared-center/

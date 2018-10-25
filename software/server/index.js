@@ -11,6 +11,7 @@ const db = require('./mongo')
 
 const dgn = require('./dragonboard-native')
 let IRcontrols = require('./ir-control-templates')
+let IRvoiceCommands = require('./ir-voice-commands-templates')
 
 // Store key current button calibrating
 let calibrating = {
@@ -25,6 +26,13 @@ db.mgConnect((oic, mgClient) => {
       db.mgInsert(oic, 'IRcontrols', IRcontrols, () => {})
     } else {
       IRcontrols = data
+    }
+  })
+  db.mgFind(oic, 'IRvoiceCommands', {}, (data) => {
+    if (data.length == 0) { // First time
+      db.mgInsert(oic, 'IRvoiceCommands', IRvoiceCommands, () => {})
+    } else {
+      IRvoiceCommands = data
     }
   })
 
