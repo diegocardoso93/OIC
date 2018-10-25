@@ -62,7 +62,7 @@
     <q-btn :disabled="notMapped('point4')" color="blue" size="2vh" class="small-1" icon="fiber_manual_record" v-on:click="buttonPressed('point4')" />
 
     <q-modal v-model="opened" minimized content-css="padding: 20px">
-      <p>Configurando voz para botão [{{btnConfigurando}}]... aguardando voz...</p>
+      <p>{{configurandoMsg}}</p>
       <q-btn
         color="primary"
         @click="opened = false"
@@ -74,15 +74,24 @@
 </template>
 
 <script>
+import SpeechMixin from '../../components/SpeechMixin'
+
 export default {
   data () {
     return {
-      btnConfigurando: '',
-      opened: false
+      configurandoMsg: '',
+      opened: false,
+      btn: {}
     }
   },
+  mixins: [SpeechMixin],
   methods: {
     buttonPressed: function (key) {
+      // step 1
+      this.configurandoMsg = 'Configurando voz para botão [' + key + ']... aguardando voz...'
+      this.speechStart()
+
+      // step 2
       /*
       this.$axios.get('https://' + location.hostname + ':3000/tv/' + key, {button: key})
         .then((response) => {
@@ -106,6 +115,9 @@ export default {
           console.log('error', e)
         })
         */
+    },
+    speechResult: function (command) {
+      console.log(command)
     },
     getControlsConfig: function () {
       this.$axios.get('https://' + location.hostname + ':3000/cfg/control/tv', {control: 'tv'})
