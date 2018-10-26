@@ -107,19 +107,12 @@ db.mgConnect((oic, mgClient) => {
 
   router.get('/calibrar-voz/:control/:button/:command', (ctx, next) => {
     let p = ctx.params
-    /*
-    IRvoiceCommands.forEach((vc, k) => {
-      if (vc[p.control]) {
-          vc[p.control].forEach((obj, key) => {
-          if (obj.label === p.button) {
-            IRvoiceCommands[k][p.control][key]['voice'] = p.command
-            db.mgRemove(oic, 'IRvoiceCommands', {}, () => {})
-            db.mgInsert(oic, 'IRvoiceCommands', IRvoiceCommands, () => {})
-          }
-        })
-      }
+    let objSet = {}
+    objSet['voice.'+p.button] = p.command
+    db.mgUpdate(oic, 'IRcontrols', {name:p.control}, objSet, (res) => {})
+    db.mgFind(oic, 'IRcontrols', {}, (data) => {
+      IRcontrols = data
     })
-    */
     console.log(ctx.params.control, ctx.params.button, ctx.params.command)
     ctx.body = {status: 200}
   })
