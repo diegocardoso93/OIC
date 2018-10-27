@@ -93,6 +93,13 @@ export default {
       this.opened = true
       this.speechStart()
       this.key = key
+      this.$root.$on('speechResult', (command) => {
+        if (command === 'error') {
+          this.opened = false
+          return
+        }
+        this.speechResultCommand(command)
+      })
     },
     getControlsConfig: function () {
       this.$axios.get('https://' + location.hostname + ':3000/cfg/control/tv', {control: 'tv'})
@@ -121,13 +128,6 @@ export default {
   },
   mounted: function () {
     this.getControlsConfig()
-    this.$root.$on('speechResult', (command) => {
-      if (command === 'error') {
-        this.opened = false
-        return
-      }
-      this.speechResultCommand(command)
-    })
   }
 }
 </script>

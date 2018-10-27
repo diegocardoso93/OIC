@@ -16,9 +16,9 @@ const mgConnect = (cb) => {
   })
 }
 
-const mgFind = (db, collect, select, callback) => {
+const mgFind = (db, collect, select, callback, project) => {
   const collection = db.collection(collect)
-  collection.find(select).toArray(function(err, docs) {
+  collection.find(select, project || {}).toArray(function(err, docs) {
     assert.equal(err, null)
     console.log("Found the following records")
     console.log(docs)

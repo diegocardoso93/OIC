@@ -27,13 +27,6 @@ db.mgConnect((oic, mgClient) => {
       IRcontrols = data
     }
   })
-  db.mgFind(oic, 'IRvoiceCommands', {}, (data) => {
-    if (data.length == 0) { // First time
-      db.mgInsert(oic, 'IRvoiceCommands', IRvoiceCommands, () => {})
-    } else {
-      IRvoiceCommands = data
-    }
-  })
 
   const client  = mqtt.connect('mqtt://localhost')
 
@@ -105,11 +98,22 @@ db.mgConnect((oic, mgClient) => {
   })
 
 
+  let sendNEC = (control, button) => {
+    db.mgFind(oic, 'IRcontrols', {name: control}, (data) => {
+      client.publish('control/'+control, data[0]['button'][button])
+      db.mgInsert(oic, 'IRlogs', [{
+        control: control,
+        button: button,
+        date: new Date()
+      }])
+    })
+  }
+
   router.get('/calibrar-voz/:control/:button/:command', (ctx, next) => {
     let p = ctx.params
-    let objSet = {}
-    objSet['voice.'+p.button] = p.command
-    db.mgUpdate(oic, 'IRcontrols', {name:p.control}, objSet, (res) => {})
+    let objSelect = {'name': p.control, 'voice.btn': p.button}
+    let objSet = {'voice.$.cmd': p.command}
+    db.mgUpdate(oic, 'IRcontrols', objSelect, objSet, (res) => {})
     db.mgFind(oic, 'IRcontrols', {}, (data) => {
       IRcontrols = data
     })
@@ -117,54 +121,36 @@ db.mgConnect((oic, mgClient) => {
     ctx.body = {status: 200}
   })
 
+  router.get('/voice-command/:cmd', (ctx, next) => {
+    let p = ctx.params
+    db.mgFind(oic, 'IRcontrols', {'voice.cmd': p.cmd}, (data) => {
+      if (data.length && data[0]['voice'].length) {
+        sendNEC(data[0]['name'], data[0]['voice'][0]['btn'])
+      }
+    }, {projection: {'name': 1,'voice.$': 1}})
+    ctx.body = {status: 200}
+  })
+
   // --------
   // @BUTTON PRESS ACTIONS
   //
   router.get('/tv/:button', (ctx, next) => {
-    db.mgFind(oic, 'IRcontrols', {name: 'tv'}, (data) => {
-      client.publish('control/tv', data[0]['button'][ctx.params.button])
-      db.mgInsert(oic, 'IRlogs', [{
-        control: 'tv',
-        button: ctx.params.button,
-        date: new Date()
-      }])
-    })
+    sendNEC('tv', ctx.params.button)
     ctx.body = {status: 200}
   })
 
   router.get('/split/:button', (ctx, next) => {
-    db.mgFind(oic, 'IRcontrols', {name: 'split'}, (data) => {
-      client.publish('control/split', data[0]['button'][ctx.params.button])
-      db.mgInsert(oic, 'IRlogs', [{
-        control: 'split',
-        button: ctx.params.button,
-        date: new Date()
-      }])
-    })
+    sendNEC('split', ctx.params.button)
     ctx.body = {status: 200}
   })
 
   router.get('/light/:button', (ctx, next) => {
-    db.mgFind(oic, 'IRcontrols', {name: 'light'}, (data) => {
-      client.publish('control/light', data[0]['button'][ctx.params.button])
-      db.mgInsert(oic, 'IRlogs', [{
-        control: 'light',
-        button: ctx.params.button,
-        date: new Date()
-      }])
-    })
+    sendNEC('light', ctx.params.button)
     ctx.body = {status: 200}
   })
 
   router.get('/receptor-tv/:button', (ctx, next) => {
-    db.mgFind(oic, 'IRcontrols', {name: 'receptor-tv'}, (data) => {
-      client.publish('control/receptor-tv', data[0]['button'][ctx.params.button])
-      db.mgInsert(oic, 'IRlogs', [{
-        control: 'receptor-tv',
-        button: ctx.params.button,
-        date: new Date()
-      }])
-    })
+    sendNEC('receptor-tv', ctx.params.button)
     ctx.body = {status: 200}
   })
   // -------

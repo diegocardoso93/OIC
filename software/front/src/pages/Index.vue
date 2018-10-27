@@ -35,7 +35,6 @@
 <script>
 import categories from '../assets/categories'
 import SpeechMixin from '../components/SpeechMixin'
-import voicecommands from '../assets/voicecommands'
 
 export default {
   data () {
@@ -58,6 +57,9 @@ export default {
       }
       if (link.hash === 'speech') {
         this.speechStart()
+        this.$root.$on('speechResult', (command) => {
+          this.speechResultCommand(command)
+        })
       } else if (this.hash) {
         this.$router.push(`/home/${this.hash}/${link.hash}`)
       } else {
@@ -66,30 +68,19 @@ export default {
     },
     speechResultCommand: function (command) {
       command = command.toLowerCase()
-      if (voicecommands[command]) {
-        this.sendCommand(voicecommands[command])
-      }
+      this.sendCommand(command)
     },
-    sendCommand: function (commands) {
-      let count = 0
-      commands.forEach((val, key) => {
-        if (key === 0) return
-        setTimeout(() => {
-          this.$axios.get('https://' + location.hostname + ':3000/' + commands[0] + '/' + val, {button: val})
-            .then((response) => {
-              console.log(response)
-            })
-            .catch((e) => {
-              console.log('error', e)
-            })
-        }, 300 * ++count)
-      })
+    sendCommand: function (command) {
+      this.$axios.get('https://' + location.hostname + ':3000/voice-command/' + command)
+        .then((response) => {
+          console.log(response)
+        })
+        .catch((e) => {
+          console.log('error', e)
+        })
     }
   },
   mounted: function () {
-    this.$root.$on('speechResult', (command) => {
-      this.speechResultCommand(command)
-    })
   }
 }
 </script>

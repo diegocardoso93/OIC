@@ -2,7 +2,7 @@
 let IRcontrols = [{
     name: 'tv',
     button: {
-        power    : '', // '0x20DF10EF',
+        power    : '0x20DF10EF', // '0x20DF10EF',
         caption  : '',
         help     : '',
         search   : '',
