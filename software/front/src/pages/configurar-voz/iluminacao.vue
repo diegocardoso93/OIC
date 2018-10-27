@@ -67,26 +67,36 @@
 </template>
 
 <script>
+import SpeechMixin from '../../components/SpeechMixin'
+
 export default {
   data () {
     return {
-      btn: {}
+      configurandoMsg: '',
+      opened: false,
+      btn: {},
+      key: null
     }
   },
+  mixins: [SpeechMixin],
   methods: {
     buttonPressed: function (key) {
-      this.$axios.get('https://' + location.hostname + ':3000/light/' + key, {button: key})
-        .then((response) => {
-          console.log(response)
-        })
-        .catch((e) => {
-          console.log('error', e)
-        })
+      // step 1
+      this.configurandoMsg = 'Configurando voz para botão [' + key + ']... aguardando voz...'
+      this.opened = true
+      this.speechStart()
+      this.key = key
+      this.$root.$on('speechResult', (command) => {
+        if (command === 'error') {
+          this.opened = false
+          return
+        }
+        this.speechResultCommand(command)
+      })
     },
     getControlsConfig: function () {
       this.$axios.get('https://' + location.hostname + ':3000/cfg/control/light', {control: 'light'})
         .then((response) => {
-          console.log(response)
           this.btn = response.data.control.button
         })
         .catch((e) => {
@@ -95,6 +105,18 @@ export default {
     },
     notMapped: function (btnLabel) {
       return !(this.btn[btnLabel] && this.btn[btnLabel].length > 0)
+    },
+    speechResultCommand: function (command) {
+      console.log(command)
+      this.$axios.get('https://' + location.hostname + ':3000/calibrar-voz/light/' + this.key + '/' + command, {})
+        .then((response) => {
+          console.log(response)
+          this.opened = false
+        })
+        .catch((e) => {
+          console.log('error', e)
+          this.opened = false
+        })
     }
   },
   mounted: function () {

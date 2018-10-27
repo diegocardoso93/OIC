@@ -20,21 +20,55 @@
 </template>
 
 <script>
+import SpeechMixin from '../../components/SpeechMixin'
+
 export default {
   data () {
     return {
-      temperatura: '',
-      btn: {}
+      configurandoMsg: '',
+      opened: false,
+      btn: {},
+      key: null
     }
   },
+  mixins: [SpeechMixin],
   methods: {
     buttonPressed: function (key) {
-      this.$axios.get('https://' + location.hostname + ':3000/split/' + key, {button: key})
+      // step 1
+      this.configurandoMsg = 'Configurando voz para botão [' + key + ']... aguardando voz...'
+      this.opened = true
+      this.speechStart()
+      this.key = key
+      this.$root.$on('speechResult', (command) => {
+        if (command === 'error') {
+          this.opened = false
+          return
+        }
+        this.speechResultCommand(command)
+      })
+    },
+    getControlsConfig: function () {
+      this.$axios.get('https://' + location.hostname + ':3000/cfg/control/split', {control: 'split'})
+        .then((response) => {
+          this.btn = response.data.control.button
+        })
+        .catch((e) => {
+          console.log('error', e)
+        })
+    },
+    notMapped: function (btnLabel) {
+      return !(this.btn[btnLabel] && this.btn[btnLabel].length > 0)
+    },
+    speechResultCommand: function (command) {
+      console.log(command)
+      this.$axios.get('https://' + location.hostname + ':3000/calibrar-voz/split/' + this.key + '/' + command, {})
         .then((response) => {
           console.log(response)
+          this.opened = false
         })
-        .catch(() => {
-          alert('error')
+        .catch((e) => {
+          console.log('error', e)
+          this.opened = false
         })
     },
     readTemperature: function () {
@@ -47,27 +81,14 @@ export default {
         .catch(() => {
           console.log('error on read temperature')
         })
-    },
-    getControlsConfig: function () {
-      this.$axios.get('https://' + location.hostname + ':3000/cfg/control/split', {control: 'split'})
-        .then((response) => {
-          console.log(response)
-          this.btn = response.data.control.button
-        })
-        .catch((e) => {
-          console.log('error', e)
-        })
-    },
-    notMapped: function (btnLabel) {
-      return !(this.btn[btnLabel] && this.btn[btnLabel].length > 0)
     }
   },
-  mounted () {
+  mounted: function () {
+    this.getControlsConfig()
     this.readTemperature()
     this.readTempControl = setInterval(() => {
       this.readTemperature()
     }, 5000)
-    this.getControlsConfig()
   },
   destroyed () {
     clearInterval(this.readTempControl)
